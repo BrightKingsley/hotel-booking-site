@@ -1,0 +1,3 @@
+type CloseType = {
+  close: Function;
+};

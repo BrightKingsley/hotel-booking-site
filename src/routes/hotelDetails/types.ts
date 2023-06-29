@@ -1,0 +1,3 @@
+type DetailsGallery = {
+  hotel: Hotel;
+};

@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .active {
+    background-color: green;
+  }
+}
+
+@layer utilities {
+  @media (max-width: 640px) {
+    .inset-notification {
+      inset: 0;
+    }
+  }
+
+  .wobble {
+    animation: wobble 1s ease-in-out infinite;
+  }
+
+  .wobble:active {
+    animation: shrink 1s ease-in-out infinite;
+  }
+
+  @keyframes wobble {
+    0% {
+      transform: rotate(1deg);
+    }
+    50% {
+      transform: rotate(-1deg);
+    }
+    100% {
+      transform: rotate(1deg);
+    }
+  }
+
+  @keyframes shrink {
+    0% {
+      transform: scale(0.95);
+    }
+    50% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0.95);
+    }
+  }
+
+  .active {
+    background-color: green;
+  }
+
+  .grad {
+    background-image: radial-gradient(
+      /* 185.44deg, */ from rgb(234 88 12 / 1),
+      to rgba(247, 240, 235, 0)
+    );
+    background-image: linear-gradient();
+  }
+
+  .gridAreas {
+    grid-template-areas:
+      "."
+      "element1"
+      "element2";
+  }
+
+  .areaElement {
+    grid-area: element1;
+  }
+}
+
+@layer base {
+  * {
+    @apply box-border;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    user-select: none;
+    -webkit-user-drag: non e;
+    -moz-user-select: none;
+    -moz-user-drag: none;
+    position: relative;
+  }
+
+  ::-webkit-scrollbar {
+    appearance: none;
+    width: 0;
+    height: 0;
+  }
+
+  html {
+    @apply text-gray-800;
+    font-family: "Poppins";
+    scroll-behavior: smooth;
+  }
+
+  img {
+    @apply w-full h-full object-cover;
+  }
+
+  .active {
+    background-color: green;
+  }
+}
+
+.active > div::before {
+  content: "";
+  @apply absolute border-primary border-2 h-[90%] -translate-x-2 rounded-full transition-all duration-300;
+}
+
+.navItem::before {
+  content: "";
+  @apply h-2 transition-all duration-300;
+}
