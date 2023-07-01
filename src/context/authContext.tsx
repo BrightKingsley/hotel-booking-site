@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useEffect,
-  useState,
-  useCallback,
-  useContext,
-} from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import NotificationContext from "./notificationContext";
 
 import {
@@ -14,12 +8,17 @@ import {
   signInWithEmailAndPassword,
   signOut,
   GoogleAuthProvider,
+  onAuthStateChanged,
 } from "@firebase/auth";
 
-import { storage, db } from "@api/firebase";
+import { db, auth } from "@api/firebase";
 import { updateProfile, User as FirebaseUser } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import {
+  addItemToLocalStorage,
+  getUser,
+  removeItemFromLocalStorage,
+} from "@/utils";
 
 type signUpWithEmailAndPassword = {
   firstname: string;
@@ -43,11 +42,11 @@ type AuthContextType = {
     lastname,
     email,
     password,
-  }: signUpWithEmailAndPassword) => void;
+  }: signUpWithEmailAndPassword) => Promise<User | null>;
   loginWithEmailAndPassword: ({
     email,
     password,
-  }: loginWithEmailAndPassword) => void;
+  }: loginWithEmailAndPassword) => Promise<User | null>;
   logoutUser: Function;
   googleAuth: Function;
   token: string;
@@ -57,21 +56,19 @@ const AuthContext = createContext<AuthContextType>({
   user: {
     uid: "",
     bookmarks: [],
-    displayName: "",
     photoURL: "",
   },
   loading: false,
   error: "",
   setUser: () => {},
-  signUpWithEmailAndPassword: () => {},
-  loginWithEmailAndPassword: () => {},
+  signUpWithEmailAndPassword: () => Promise.resolve(null),
+  loginWithEmailAndPassword: () => Promise.resolve(null),
   logoutUser: () => {},
   googleAuth: () => {},
   token: "",
 });
 
 const provider = new GoogleAuthProvider();
-const auth = getAuth();
 
 export const AuthContextProvider = ({
   children,
@@ -84,6 +81,66 @@ export const AuthContextProvider = ({
   const [token, setToken] = useState<string>("");
 
   const { triggerNotification } = useContext(NotificationContext);
+
+  useEffect(() => {
+    console.log("user", user);
+  }, []);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  const createUserDocument = async ({
+    credential,
+    firstname,
+    email,
+  }: {
+    credential: any;
+    firstname: string | null;
+    email: string | null;
+  }) => {
+    const { uid, photoURL } = credential.user;
+    if (!uid) {
+      triggerNotification("sign up failed");
+      return null;
+    }
+    setUser({ uid, firstname, photoURL, bookmarks: [] });
+    try {
+      //Update profile
+      await updateProfile(credential.user, {
+        displayName: firstname,
+      });
+      //create user on firestore
+      await setDoc(doc(db, "users", credential.user.uid), {
+        uid: credential.user.uid,
+        email,
+        firstname,
+        photoURL,
+        bookmarks: [],
+      });
+
+      return {
+        uid,
+        email,
+        firstname,
+        photoURL,
+        bookmarks: [],
+      };
+
+      //create empty user chats on firestore
+      // await setDoc(doc(firestore, "userChats", userCredential.user.uid), {});
+    } catch (err: any) {
+      setError(err.message);
+    }
+    triggerNotification("sign up failed");
+    setLoading(false);
+  };
 
   const signUpWithEmailAndPassword = async ({
     firstname = "",
@@ -106,12 +163,19 @@ export const AuthContextProvider = ({
       );
 
       // Signed in
+      const createdUser = await createUserDocument({
+        credential: userCredential,
+        email,
+        firstname,
+      });
+
+      /*
+      // Signed in
       const { uid, displayName, photoURL }: FirebaseUser = userCredential.user;
-      console.log("USER:", user);
       if (!user) {
         return triggerNotification("signed up successfully");
       }
-      setUser({ uid, displayName, photoURL, bookmarks: [] });
+      setUser({ uid, photoURL, bookmarks: [] });
       try {
         //Update profile
         await updateProfile(userCredential.user, {
@@ -134,14 +198,22 @@ export const AuthContextProvider = ({
           triggerNotification("sign up failed");
         }, 1000);
       }
-      triggerNotification("sign up failed");
+      */
+      if (!createdUser) {
+        triggerNotification("sign up failed");
+        setLoading(false);
+        return null;
+      }
+      setUser(createdUser);
+      triggerNotification("Signed up successfully");
       setLoading(false);
+      addItemToLocalStorage({ item: createdUser.uid, name: "uid" });
+      return createdUser;
     } catch (err: any) {
       setError(err.message);
-      setTimeout(() => {
-        setLoading(false);
-        triggerNotification("sign up failed");
-      }, 1000);
+      setLoading(false);
+      triggerNotification("sign up failed");
+      return null;
     }
   };
 
@@ -159,24 +231,33 @@ export const AuthContextProvider = ({
         email,
         password
       );
-
       // Signed in
-      const { uid, displayName, photoURL }: FirebaseUser = userCredential.user;
-      if (user) {
-        setUser({ uid, displayName, photoURL, bookmarks: [] });
-        triggerNotification("signed up successfully");
+      const { uid }: FirebaseUser = userCredential.user;
+
+      console.log("USER_CREDENTIAL-USER", userCredential, userCredential.user);
+
+      if (!uid) {
+        triggerNotification("log in failed ");
+        setLoading(false);
+        return null;
       }
-      setTimeout(() => {
+      const userDocument = await getUser(uid);
+      if (!user) {
         setLoading(false);
-        triggerNotification("sign up failed");
-      }, 1000);
+        triggerNotification("login failed");
+        return null;
+      }
+      setUser(userDocument);
+      setLoading(false);
+      triggerNotification("signed up successfully");
+      addItemToLocalStorage({ item: userDocument?.uid, name: "uid" });
+
+      return userDocument;
     } catch (error: any) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setTimeout(() => {
-        setLoading(false);
-        triggerNotification("sign up failed");
-      }, 500);
+      console.log("ERROR:", error.code, error.message);
+      setLoading(false);
+      triggerNotification("sign up failed");
+      return null;
     }
   };
 
@@ -184,30 +265,58 @@ export const AuthContextProvider = ({
     try {
       const result = await signInWithPopup(auth, provider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
+
+      //NOTE {find something to do with this}
       const token = credential?.accessToken;
+
+      console.log("GOOGEL_AUTH:", result, result.user, credential);
+
+      if (!result.user) return null;
+      const createdUser = await createUserDocument({
+        credential: result,
+        email: result.user.email,
+        firstname: result.user.displayName,
+      });
+
+      if (!createdUser) {
+        triggerNotification("sign up failed");
+        setLoading(false);
+        return null;
+      }
       // The signed-in user info.
-      const user = result.user;
+      setUser(createdUser);
+      triggerNotification("signed up successfully");
+      setLoading(false);
+      addItemToLocalStorage({ item: createdUser.uid, name: "uid" });
+      return createdUser;
     } catch (error: any) {
       // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
+
       const credential = GoogleAuthProvider.credentialFromError(error);
+      // The email of the user's account used.
+      console.log(
+        "ERROR:",
+        error.code,
+        error.message,
+        error.customData.email,
+        credential
+      );
+
+      // The AuthCredential type that was used.
+      return null;
     }
   };
 
   const logoutUser = async () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        triggerNotification("sign-out successful");
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
-      });
+    try {
+      const authState = await signOut(auth);
+      console.log("authState", authState);
+      removeItemFromLocalStorage("uid");
+      triggerNotification("signed out");
+      setUser(null);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

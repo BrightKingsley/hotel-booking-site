@@ -11,6 +11,15 @@ export default function Overlay({
     disableOnClick && "cursor-pointer"
   } top-0 left-0 flex items-center justify-center backdrop-blur-sm`;
 
+  useEffect(() => {
+    show &&
+      window.addEventListener(
+        "keydown",
+        (e: KeyboardEvent) =>
+          e.code === "Escape" && handleShowOverlay && handleShowOverlay()
+      );
+  });
+
   return (
     <AnimatePresence>
       {show &&

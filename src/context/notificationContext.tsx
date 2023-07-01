@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useState } from "react";
 type NotificationContextType = {
   showNotification: boolean;
   triggerNotification: Function;
-  notificationMessage: string;
+  notificationMessage: string | React.ReactNode;
 };
 
 const NotificationContext = createContext<NotificationContextType>({
@@ -18,9 +18,11 @@ export const NotificationContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [showNotification, setShowNotification] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState<
+    string | React.ReactNode
+  >("");
 
-  const triggerNotification = (message: string) => {
+  const triggerNotification = (message: string | React.ReactNode) => {
     console.log("SHOWING_NOTIFICATION");
     setShowNotification(true);
     setNotificationMessage(message);

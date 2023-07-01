@@ -3,7 +3,7 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 // import hotels from "@/data/hotels-min.json";
 import hotels from "@/data/hotels.json";
 
-export const getHotels = async (sort: string, params: string) => {
+export const getHotels = async (sort?: string, params?: string) => {
   // try {
   //   const hotelCollectionRef = collection(db, "hotel");
   //   const querySnapshot = await getDocs(hotelCollectionRef);

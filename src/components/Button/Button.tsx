@@ -6,7 +6,7 @@ type ButtonProps = {
   children: React.ReactNode;
   onClick?: Function;
   full?: boolean;
-  color?: "primary" | "accent" | "error";
+  color?: "primary" | "accent" | "error" | "gray";
   text?: "xs" | "sm" | "lg" | "xl";
   disabled?: boolean;
   loading?: boolean;
@@ -21,7 +21,12 @@ const Button = ({
   disabled,
   loading,
 }: ButtonProps) => {
-  const btnStyles = useButtonStyle({ full, color, text });
+  const btnStyles = useButtonStyle({
+    full,
+    color,
+    text,
+    disabled: disabled !== undefined && disabled,
+  });
 
   return (
     <button

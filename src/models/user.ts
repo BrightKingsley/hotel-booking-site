@@ -1,6 +1,7 @@
 type User = {
-  uid: string;
-  displayName: string | null;
-  photoURL: string | null;
-  bookmarks: string[];
+  uid?: string | null;
+  email?: string | null;
+  firstname?: string | null;
+  photoURL?: string | null;
+  bookmarks?: string[] | null;
 };

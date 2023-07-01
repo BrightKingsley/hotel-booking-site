@@ -40,7 +40,6 @@ export const HotelContextProvider = ({
 
   const loadHotels = async (sort: string) => {
     const hotels = await getHotels(sort, params);
-    console.log("hots", hotels);
     setHotels(hotels);
     // setHotels(hotels);
   };

@@ -14,14 +14,14 @@ export default function Increment() {
     <div className="flex items-center justify-center">
       <span
         onClick={handleDecrement}
-        className="bg-gray-300 w-6 h-6 flex items-center justify-center cursor-pointer rounded-sm active:scale-90 transition-all duration-200"
+        className="bg-primary/10 w-5 h-5 flex items-center justify-center cursor-pointer rounded-sm active:scale-90 transition-all duration-200"
       >
         -
       </span>
       <small className="px-2">{value}</small>
       <span
         onClick={handleIncrement}
-        className="bg-gray-300 w-6 h-6 flex items-center justify-center cursor-pointer rounded-sm active:scale-90 transition-all duration-200"
+        className="bg-primary/10 w-5 h-5 flex items-center justify-center cursor-pointer rounded-sm active:scale-90 transition-all duration-200"
       >
         +
       </span>

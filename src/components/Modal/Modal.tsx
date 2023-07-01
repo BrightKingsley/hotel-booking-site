@@ -19,14 +19,6 @@ export default function Modal() {
     disableOnClick,
   } = useContext(ModalContext);
 
-  useEffect(() => {
-    showModal &&
-      window.addEventListener(
-        "keydown",
-        (e: KeyboardEvent) => e.code === "Escape" && actionCancel()
-      );
-  });
-
   return createPortal(
     <AnimatePresence>
       {showModal && (
@@ -34,7 +26,7 @@ export default function Modal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="relative z-50 top-0 left-0 flex items-center justify-center"
+          className="fixed w-full h-full z-50 top-0 left-0 flex items-center justify-center"
         >
           <Overlay
             show={showModal}

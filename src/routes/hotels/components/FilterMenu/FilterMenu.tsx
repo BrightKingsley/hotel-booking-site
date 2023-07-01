@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import Button from "../UI/Button";
-import { AnimateInOut, Input as Checkbox, Increment } from "@/components";
+import { AnimateInOut, Increment, Input } from "@/components";
 import CategorySelect from "../CategorySelect";
 
 import { Button } from "@/components";
-import { BiGridHorizontal } from "react-icons/bi";
-import { motion } from "framer-motion";
+import { BiGridHorizontal, BiMenu } from "react-icons/bi";
 
 const priceMax = 10000;
 const priceMin = 0;
@@ -19,8 +18,12 @@ export default function FilterMenu({
   handleShowNav: Function;
   showNav: boolean;
 }) {
-  const [priceRange, setPriceRange] = useState([priceMin, priceMax]);
-  const [areaRange, setAreaRange] = useState([200, 5000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    priceMin,
+    priceMax,
+  ]);
+  const [areaRange, setAreaRange] = useState<[number, number]>([200, 5000]);
+  const [windowWidth, setWindowWidth] = useState(0);
   const [type, setType] = useState("");
   // const [type, setType] = useState("");
   // const [type, setType] = useState("");
@@ -31,67 +34,86 @@ export default function FilterMenu({
     type: "",
   });
 
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", () => {
+      window.innerWidth > 576 && handleShowNav(true);
+      setWindowWidth(window.innerWidth);
+    });
+  }, [windowWidth]);
+
   // const { setParams } = useContext(listingContext);
 
-  const getPriceRange = (value: []) => {
+  const getPriceRange = (value: [number, number]) => {
     setPriceRange(value);
   };
 
-  const getAreaRange = (value: number[]) => {
+  const getAreaRange = (value: [number, number]) => {
     setAreaRange(value);
   };
 
+  const setShowNav = () => {
+    handleShowNav(true);
+  };
+
   return (
+    // <Media queries={{ small: { maxWidth: 576 } }}>
+    //   {(matches) => {
+    //     !matches.small && setShowNav();
+    //     return (
     <AnimateInOut
       init={{ x: "-100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       out={{ x: "-100%", opacity: 0 }}
       show={showNav}
-      className={`${"sm:translate-x-0 fixed z-20 transition-all duration-200 bg-body sm:static w-64 overflow-y-auto h-[calc(100vh-3.7rem)] border-r-primary border-2 p-2"}  ${
+      className={`pl-12 pr-4 ${"sm:translate-x-0 fixed z-20 transition-all duration-200 bg-body sm:static w-64 sm:w-72 overflow-y-auto h-[calc(100vh-3.7rem)] border-r-primary border-2 p-2"}  ${
         !showNav && "-translate-x-[5rem] "
       }`}
     >
-      <span className={"sm:hidden"} onClick={() => handleShowNav(false)}>
-        <BiGridHorizontal />
+      <span
+        className={"sm:hidden text-2xl cursor-pointer"}
+        onClick={() => handleShowNav(false)}
+      >
+        <BiMenu />
       </span>
 
-      <h2>Filters</h2>
-      <div className={""}>
+      <h2 className="relative py-2 font-[500] text-[1.1rem] w-full after:bg-gray-200 after:h-[1px] after:absolute after:top-full zero-inset-after">
+        Filters
+      </h2>
+      <div className={"divide-y-[1px]"}>
         <div className={""}>
-          <p>Property Type</p>
-          <CategorySelect
-            type={type}
-            setType={
-              (type: string) => {
-                setType(type);
-                return setFilters((prev) => ({ ...prev, type }));
+          <p className="text-[0.8rem] font-[500]">Room Type</p>
+          <div className="pb-2">
+            <CategorySelect
+              type={type}
+              setType={
+                (type: string) => {
+                  setType(type);
+                  return setFilters((prev) => ({ ...prev, type }));
+                }
+                // PropertysetFilters((prev) => {
+                //   const newFilters = prev + `propertyType=${type}`;
+                //   return newFilters;
+                // })
               }
-              // setFilters((prev) => {
-              //   const newFilters = prev + `propertyType=${type}`;
-              //   return newFilters;
-              // })
-            }
-          />
+            />
+          </div>
         </div>
-        <div className={""}>
-          <p>Rental Period</p>
-          <label htmlFor=""></label>
-          <Checkbox label="All" value="all" />
-          <Checkbox label="Programming" value="programming" />
-          <Checkbox label="Hardware" value="hardware" />
-        </div>
-        <div className={""}>
-          <p>Price Range</p>
-          {/* <RangeInput
+        <div className={"space-y-2 py-2"}>
+          <p className="text-[0.8rem] font-[500]">Price Range</p>
+          <Input
+            type="range"
             getRangeValue={getPriceRange}
-            setRangeValue={priceRange}
+            rangeValue={priceRange}
             min={priceMin}
             max={priceMax}
             step={10}
-          /> */}
-          <div className={""}>
+          />
+          <div className={"flex justify-between items-center gap-4"}>
             <input
-              className={"w-full"}
+              className={
+                "w-12 text-center flex-1 text-xs focus:outline-primary focus:outline bg-primary/10 rounded-[0.2rem] py-[2px] px-1"
+              }
               type="number"
               name=""
               id=""
@@ -107,7 +129,9 @@ export default function FilterMenu({
               }
             />
             <input
-              className={"w-full"}
+              className={
+                "w-12 text-center flex-1 text-xs focus:outline-primary focus:outline bg-primary/10 rounded-[0.2rem] py-[2px] px-1"
+              }
               type="number"
               name=""
               id=""
@@ -121,49 +145,55 @@ export default function FilterMenu({
                 })
               }
             />
-            <Button
-              onClick={() => {
-                return setFilters((prev) => ({
-                  ...prev,
-                  priceRange: {
-                    min: priceRange[0],
-                    max: priceRange[1],
-                  },
-                }));
-                // setFilters((prev) => {
-                //   const newFilters =
-                //     prev +
-                //     `&minPrice=${priceRange[0]}&maxPrice=${priceRange[1]}`;
-                //   return newFilters;
-                // });
-              }}
-            >
-              OK
-            </Button>
+            <div className="flex-1 h-7 rounded-[0.2rem] overflow-clip">
+              <Button
+                full={true}
+                onClick={() => {
+                  return setFilters((prev) => ({
+                    ...prev,
+                    priceRange: {
+                      min: priceRange[0],
+                      max: priceRange[1],
+                    },
+                  }));
+                  // setFilters((prev) => {
+                  //   const newFilters =
+                  //     prev +
+                  //     `&minPrice=${priceRange[0]}&maxPrice=${priceRange[1]}`;
+                  //   return newFilters;
+                  // });
+                }}
+              >
+                OK
+              </Button>
+            </div>
           </div>
         </div>
-        <div className={""}>
-          <div className={""}>
-            <p>Bedroom</p>
+        <div className={"flex w-full justify-between pr-12 py-2"}>
+          <div className={"space-y-1"}>
+            <p className="text-[0.8rem] font-[500]">bedroom</p>
             <Increment />
           </div>
-          <div className={""}>
-            <p>bathroom</p>
+          <div className={"space-y-1"}>
+            <p className="text-[0.8rem] font-[500]">bathroom</p>
             <Increment />
           </div>
         </div>
-        <div className={""}>
-          <p>Property area Range</p>
-          {/* <RangeInput
+        <div className={"space-y-2 py-2"}>
+          <p className="text-[0.8rem] font-[500]">Property area Range</p>
+          <Input
+            type="range"
             getRangeValue={getAreaRange}
-            setRangeValue={areaRange}
+            rangeValue={areaRange}
             min={areaMin}
             max={areaMax}
             step={10}
-          /> */}
-          <div className={""}>
+          />
+          <div className={"flex justify-between items-center gap-4"}>
             <input
-              className={"w-full"}
+              className={
+                "w-12 text-center flex-1 text-xs focus:outline-primary focus:outline bg-primary/10 rounded-[0.2rem] py-[2px] px-2"
+              }
               type="number"
               name=""
               id=""
@@ -178,7 +208,9 @@ export default function FilterMenu({
               }
             />
             <input
-              className={"w-full"}
+              className={
+                "w-12 text-center flex-1 text-xs focus:outline-primary focus:outline bg-primary/10 rounded-[0.2rem] py-[2px] px-1"
+              }
               type="number"
               name=""
               id=""
@@ -192,34 +224,32 @@ export default function FilterMenu({
                 })
               }
             />
-            <Button
-              onClick={() => {
-                return setFilters((prev) => ({
-                  ...prev,
-                  areaRange: {
-                    min: areaRange[0],
-                    max: areaRange[1],
-                  },
-                }));
+            <div className="flex-1 h-7 rounded-[0.2rem] overflow-clip">
+              <Button
+                full={true}
+                onClick={() => {
+                  return setFilters((prev) => ({
+                    ...prev,
+                    areaRange: {
+                      min: areaRange[0],
+                      max: areaRange[1],
+                    },
+                  }));
 
-                // setFilters((prev) => {
-                //   const newFilters =
-                //     prev + `&minArea=${areaRange[0]}&maxArea=${areaRange[1]}`;
-                //   return newFilters;
-                // });
-              }}
-            >
-              OK
-            </Button>
+                  // setFilters((prev) => {
+                  //   const newFilters =
+                  //     prev + `&minArea=${areaRange[0]}&maxArea=${areaRange[1]}`;
+                  //   return newFilters;
+                  // });
+                }}
+              >
+                OK
+              </Button>
+            </div>
           </div>
         </div>
-        <div className={""}>
-          <p>Additional Conveniences</p>
-          <Checkbox label="Pets allowed" />
-          <Checkbox label="Parking slot" />
-          <Checkbox label="Furnished" />
-        </div>
-        <div className={""}>
+        <div className={""}></div>
+        <div className={"py-2"}>
           <Button
             full={true}
             onClick={() => {
@@ -229,10 +259,13 @@ export default function FilterMenu({
               setAreaRange([areaMin, areaMax]);
             }}
           >
-            reset
+            RESET
           </Button>
         </div>
       </div>
     </AnimateInOut>
+    //     );
+    //   }}
+    // </Media>
   );
 }

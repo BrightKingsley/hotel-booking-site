@@ -6,10 +6,11 @@ import { Hands, Girl, Coding } from "@/assets";
 import { AnimateInOut, Button } from "@/components";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import { motion } from "framer-motion";
+import { FaGoogle } from "react-icons/fa";
+
+const inputStyles = `focus:outline-primary p-2 rounded-md w-full bg-primary/10 focus:bg-white transition-all duration-200 `;
 
 export default function Signup() {
-  const inputStyles = `focus:outline-primary p-2 rounded-md w-full bg-primary/10 focus:bg-white transition-all duration-200 `;
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,21 +31,36 @@ export default function Signup() {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      setEmail("");
-      setPassword("");
+    document.title = "Raale. || Login";
+  }, []);
 
-      // navigate(source || "/listings", { state: location.state });
-    } else {
-      // console.log(error);
-      return;
-    }
+  useEffect(() => {
+    if (!user) return;
+
+    setEmail("");
+    setPassword("");
+
+    navigate(source || "/app/hotels", { state: location.state });
   }, [user, error, source, navigate]);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    signUpWithEmailAndPassword({ email, firstname, lastname, password });
+    const createdUser = await signUpWithEmailAndPassword({
+      email,
+      firstname,
+      lastname,
+      password,
+    });
+    if (!createdUser) return;
+    navigate(source || "/app/hotels", { state: location.state });
+  };
+
+  const handleGoogleLogin = async () => {
+    const user = await googleAuth();
+    console.log("USER_FROM_GOOGLE_LOGIN: ", user);
+    if (!user) return;
+    navigate("/app/hotels", { state: location.state });
   };
 
   const handleLinkToSignup = () => {
@@ -129,7 +145,7 @@ export default function Signup() {
                 email.length > 0 ? "inline" : "hidden"
               } transition-all duration-200 text-primary`}
             >
-              email
+              email: <small className="text-gray-600"> include '@'</small>
             </small>
             <input
               value={email}
@@ -152,7 +168,8 @@ export default function Signup() {
                   password.length > 0 ? "inline-block" : "hidden"
                 } transition-all duration-200 text-primary`}
               >
-                password
+                password:{" "}
+                <small className="text-gray-600"> {">"} 8 chars</small>
               </small>
               <input
                 value={password}
@@ -163,6 +180,7 @@ export default function Signup() {
                   };
                 }}
                 name="password"
+                min={8}
                 type={`${showPassword ? "text" : "password"}`}
                 placeholder="password"
                 className={inputStyles}
@@ -186,13 +204,25 @@ export default function Signup() {
                 firstname.length < 1 ||
                 lastname.length < 1 ||
                 email.length < 1 ||
-                password.length < 1
+                password.length < 8
               }
               loading={loading}
               full={true}
             >
               sign up
             </Button>
+          </div>
+
+          <p className="w-fit mx-auto">OR</p>
+
+          <div
+            className="w-fit mx-auto cursor-pointer px-3 py-2 bg-blue-400 rounded-md flex items-center gap-3 text-white active:scale-95 hover:opacity-80 transition-all duration-200"
+            onClick={() => handleGoogleLogin()}
+          >
+            <span className="text-white">
+              <FaGoogle />
+            </span>
+            <p>Sign up with google</p>
           </div>
         </motion.form>
       </div>

@@ -1,11 +1,13 @@
 type ButtonStyleProps = {
   full?: boolean;
   color?: "primary" | "accent" | "error" | "gray";
+  disabled?: boolean;
   text?: "xs" | "sm" | "lg" | "xl";
 };
 
 export default function useButtonStyle({
   color,
+  disabled,
   full,
   text,
 }: ButtonStyleProps) {
@@ -41,7 +43,11 @@ export default function useButtonStyle({
 
   return `${btnColor} ${
     color === "gray" ? textColor : "text-white"
-  } px-2 py-1 whitespace-nowrap font-bold hover:shadow-lg ${shadowColor} hover:opacity-80 active:opacity-100 transition-all ease-in-out text-${
+  } px-2 py-1 whitespace-nowrap font-bold hover:shadow-lg ${shadowColor} hover:opacity-80 transition-all ease-in-out text-${
     text ? text : "base"
-  } ${full ? "w-full h-full" : "rounded-sm active:scale-95 "} `;
+  } ${full ? "w-full h-full" : "rounded-sm"} ${
+    disabled && "cursor-not-allowed"
+  } ${
+    !disabled && !full && "active:scale-95 active:opacity-100"
+  } text-center flex items-center justify-center cursor-pointer`;
 }

@@ -18,7 +18,7 @@ export default function CategorySelect({
           color={type === "house" ? "primary" : "gray"}
           onClick={() => setType("house")}
         >
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center font-[300]">
             <FaBreadSlice />
             <small>House</small>
           </div>
@@ -30,7 +30,7 @@ export default function CategorySelect({
           color={type === "apartment" ? "primary" : "gray"}
           onClick={() => setType("apartment")}
         >
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center font-[300]">
             <FaHome />
             <small>Apartment</small>
           </div>
@@ -42,7 +42,7 @@ export default function CategorySelect({
           color={type === "commercial" ? "primary" : "gray"}
           onClick={() => setType("commercial")}
         >
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center font-[300]">
             <IoHardwareChip />
             <small>Commercial</small>
           </div>
@@ -54,7 +54,7 @@ export default function CategorySelect({
           color={type === "land" ? "primary" : "gray"}
           onClick={() => setType("land")}
         >
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center font-[300]">
             <IoLaptop />
             <small>Land Plot</small>
           </div>

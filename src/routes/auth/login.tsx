@@ -8,10 +8,11 @@ import { AuthContext } from "@/context";
 import { useButtonStyle } from "@/hooks";
 import { AnimateInOut, Button } from "@/components";
 import { motion } from "framer-motion";
+import { FaGoogle } from "react-icons/fa";
+import { inputStyles } from "@/constants";
 
 export default function Login() {
-  const inputStyles = `focus:outline-primary p-2 rounded-md w-full bg-primary/10 focus:bg-white transition-all duration-200 `;
-  const buttonStyles = useButtonStyle({ color: "primary", full: true });
+  // const buttonStyles = useButtonStyle({ color: "primary", full: true });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,21 +31,27 @@ export default function Login() {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      setEmail("");
-      setPassword("");
+    if (!user) return;
 
-      // navigate(source || "/listings", { state: location.state });
-    } else {
-      // console.log(error);
-      return;
-    }
+    setEmail("");
+    setPassword("");
+
+    navigate(source || "/app/hotels", { state: location.state });
   }, [user, error, source, navigate]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    loginWithEmailAndPassword({ email, password });
-    navigate("/app/courses");
+    const loggedInUser = await loginWithEmailAndPassword({ email, password });
+    if (!user) return;
+    navigate(source || "/app/hotels", { state: location.state });
+  };
+
+  const handleGoogleLogin = async () => {
+    const user = await googleAuth();
+    console.log("USER_FROM_GOOGLE_LOGIN: ", user);
+    if (!user) return;
+
+    navigate("/app/hotels", { state: location.state });
   };
 
   const handleLinkToSignup = () => {
@@ -143,6 +150,18 @@ export default function Login() {
             >
               login
             </Button>
+          </div>
+
+          <p className="w-fit mx-auto">OR</p>
+
+          <div
+            className="w-fit mx-auto px-3 py-2 cursor-pointer bg-blue-400 rounded-md flex items-center gap-3 text-white active:scale-95 hover:opacity-80 transition-all duration-200"
+            onClick={() => handleGoogleLogin()}
+          >
+            <span className="text-white">
+              <FaGoogle />
+            </span>
+            <p>Sign in with google</p>
           </div>
         </motion.form>
       </div>

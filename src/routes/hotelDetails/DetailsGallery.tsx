@@ -1,10 +1,12 @@
-import { Carousel } from "react-responsive-carousel";
+import { Carousel } from "@/components";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 export default function DetailsGallery({ hotel }: DetailsGallery) {
   const hotelImgs = [];
   for (let i = 0; i <= 6; i++) {
-    hotelImgs.push(hotel.images[i]);
+    if (hotel) {
+      hotelImgs.push(hotel.images[i]);
+    }
   }
 
   return (
@@ -19,10 +21,10 @@ export default function DetailsGallery({ hotel }: DetailsGallery) {
             "inline-block flex-1 shrink-0 bg-grey h-[calc(100%-7rem)] rounded-lg overflow-clip lg:inline-block lg:shrink-0 lg:h-full lg:flex-1 rounded-l-xl rounded-r-sm "
           }
         >
-          {hotelImgs && <img src={hotel.images[0]} alt="" />}
+          {hotelImgs && <img src={hotel?.images[0]} alt="" />}
         </div>
         <div className="flex shrink-0 flex-nowrap gap-2 rounded-lg overflow-x-auto pb-2 lg:pb-0 lg:flex-col lg:rounded-l-sm lg:rounded-r-lg">
-          {hotelImgs &&
+          {hotelImgs && hotelImgs.length > 0 ? (
             hotelImgs.slice(1).map((img: string) => (
               <div
                 className="shrink-0 h-24 w-24 rounded-lg bg-grey flex items-center overflow-clip justify-center lg:mr-2 lg:rounded-l-sm lg:rounded-r-lg "
@@ -30,25 +32,15 @@ export default function DetailsGallery({ hotel }: DetailsGallery) {
               >
                 <img src={img} alt="" />
               </div>
-            ))}
+            ))
+          ) : (
+            <></>
+          )}
         </div>
       </div>
-      <div className={"sm:hidden fixed mt-16"}>
-        <div className={"relative block w-full h-64"}>
-          <Carousel
-            infiniteLoop={true}
-            autoPlay={true}
-            dynamicHeight={false}
-            showThumbs={false}
-            showIndicators={false}
-          >
-            {hotelImgs &&
-              hotelImgs.map((img, i) => (
-                <div key={Math.random()} className={""}>
-                  <img src={img} alt="" />
-                </div>
-              ))}
-          </Carousel>
+      <div className={"sm:hidden fixed mt-16 bg-grey"}>
+        <div className={"fixed block"}>
+          <Carousel images={hotelImgs} height="h-64" />
         </div>
       </div>
     </>

@@ -42,7 +42,7 @@ const Notification = () => {
               }}
               drag
               dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-              className="fixed p-4 right-16 w-11/12 sm:w-80 bg-white rounded-lg sm:rounded-xl flex items-center gap-2 outline outline-primary ring-offset-4 z-50 top-4 sm:top-auto sm:bottom-16 inset-notification h-fit shadow-lg shadow-primary/30"
+              className="fixed p-3 right-16 w-11/12 sm:w-80 bg-white rounded-lg sm:rounded-xl flex items-center gap-2 outline outline-primary ring-offset-4 z-50 top-4 sm:top-auto sm:bottom-16 inset-notification h-fit shadow-lg shadow-primary/30"
             >
               <span className="text-primary">
                 <IoNotifications />

@@ -19,12 +19,14 @@ import {
   App,
   HotelDetails,
   Root,
-  MyLearning,
+  Chat,
+  Bookings,
 } from "./routes";
 
 //style
 import "./index.css";
 import { Auth, Login, Signup } from "./routes/auth";
+import { UserContextProvider } from "./context/userContext";
 
 const router = createBrowserRouter([
   {
@@ -46,14 +48,18 @@ const router = createBrowserRouter([
             path: "hotels",
             element: <Hotels />,
           },
+          {
+            path: "hotels/bookings/:id",
+            element: <Bookings />,
+          },
+          {
+            path: "hotels/chat/:id",
+            element: <Chat />,
+          },
 
           {
             path: "hotels/:id",
             element: <HotelDetails />,
-          },
-          {
-            path: "my-learning",
-            element: <MyLearning />,
           },
         ],
       },
@@ -80,11 +86,15 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <NotificationContextProvider>
       <ModalContextProvider>
         <AuthContextProvider>
-          <HotelContextProvider>
-            <RouterProvider router={router} />
-          </HotelContextProvider>
+          <UserContextProvider>
+            <HotelContextProvider>
+              <RouterProvider router={router} />
+            </HotelContextProvider>
+          </UserContextProvider>
         </AuthContextProvider>
       </ModalContextProvider>
     </NotificationContextProvider>
   </React.StrictMode>
 );
+
+// document.getElementById("root")!.style.height = "100%";

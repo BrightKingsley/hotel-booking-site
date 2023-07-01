@@ -18,7 +18,7 @@ export default function UserProfile() {
   const [changePassword, setChangePassword] = useState(false);
 
   // use context
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, logoutUser } = useContext(AuthContext);
   const { triggerNotification } = useContext(NotificationContext);
   const { triggerModal } = useContext(ModalContext);
 
@@ -26,19 +26,9 @@ export default function UserProfile() {
   const buttonStyle = useButtonStyle({ color: "primary" });
   // const imageURI = useImageURI(e);
 
-  // const readURI = async (e: ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files[0]) {
-  //     let result;
-  //     let reader = new FileReader();
-
-  //     reader.onload = await function (ev: ProgressEvent<FileReader>) {
-  //       result = ev.target?.result;
-  //     };
-  //     reader.readAsDataURL(e.target.files[0]);
-  //     setPreviewImage(e.target.files[0]);
-  //     return result;
-  //   }
-  // };
+  useEffect(() => {
+    console.log("USER:===>", user);
+  }, []);
 
   const readURI = (e: ChangeEvent<HTMLInputElement>) => {
     let result;
@@ -75,8 +65,8 @@ export default function UserProfile() {
               // NOTE
               // @ts-ignore
               <img src={previewImage} />
-            ) : user?.image && user?.image.length > 1 ? (
-              <img src={user.image.length} />
+            ) : user?.photoURL && user?.photoURL.length > 1 ? (
+              <img src={user.photoURL} />
             ) : (
               <FaUser />
             )}
@@ -132,7 +122,7 @@ export default function UserProfile() {
               show={confirm}
               text="save"
               actionCancel={() => {
-                setPreviewImage(user?.image);
+                setPreviewImage(user?.photoURL);
                 setConfirm(false);
               }}
               actionConfirm={() => {
@@ -157,8 +147,7 @@ export default function UserProfile() {
           onClick={() =>
             triggerModal({
               message: "Are you sure you want to logout?",
-              confirm: () => () =>
-                triggerNotification("logged out successfully"),
+              confirm: () => logoutUser,
               cancel: () => triggerModal,
               clickToDisable: true,
               // show: true,

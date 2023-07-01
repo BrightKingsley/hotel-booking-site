@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "../Button";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaBookmark, FaSearch, FaUser } from "react-icons/fa";
 import Panel from "../Panel/Panel";
 import Media from "react-media";
+import { Girl } from "@/assets";
+import { AuthContext } from "@/context";
 
 const Header = () => {
   const [showPanel, setShowPanel] = useState(false);
   const [panelContent, setPanelContent] = useState("");
+
+  const { user } = useContext(AuthContext);
 
   const togglePanel = (content: string) => {
     if (panelContent === content) {
@@ -45,7 +49,7 @@ const Header = () => {
               !matches.small && (
                 <input
                   type="text"
-                  className="w-full h-full rounded-md bg-gray-100 text-gray-600 focus:outline outline-primary indent-8 pr-2"
+                  className="w-full h-full rounded-md bg-gray-100 text-gray-600 focus:outline focus:outline-primary indent-8 pr-2"
                 />
               )
             }
@@ -63,15 +67,17 @@ const Header = () => {
         <button
           onClick={() => togglePanel("profile")}
           title="profile"
-          className={`${
+          className={` w-10 h-10 overflow-clip flex items-center justify-center ${
             panelContent === ("bookmarks" || "notifications")
               ? "bg-transparent text-primary"
               : "bg-gradient-primary text-white"
           } ${
-            panelContent === "profile" ? "rounded-lg" : "rounded-full"
-          } transition-all duration-300 cursor-pointer p-3`}
+            panelContent === "profile"
+              ? "rounded-lg ring-2 ring-primary ring-offset-2"
+              : "rounded-full"
+          } transition-all duration-300 cursor-pointer  outline-none`}
         >
-          <FaUser />
+          {user?.photoURL ? <img src={user.photoURL} /> : <FaUser />}
         </button>
       </div>
 

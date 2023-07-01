@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { PanelType } from "./types";
 import Close from "../Close";
 import UserProfile from "./UserProfile";
+import Bookmarks from "./Bookmarks";
+import Notifications from "./Notifications";
 
 export default function Panel({ content, hide, show }: PanelType) {
+  useEffect(() => {
+    show &&
+      window.addEventListener(
+        "keydown",
+        (e: any) => e.code === "Escape" && hide && hide(e)
+      );
+  });
+
   return (
     <AnimatePresence>
       {show && (
@@ -12,7 +22,7 @@ export default function Panel({ content, hide, show }: PanelType) {
           initial={{ opacity: 0, x: 300 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 300 }}
-          className="bg-body rounded-md w-64 h-72 fixed top-16 right-2 shadow-lg border-t-2 border-gray-100 z-20"
+          className="bg-body rounded-md w-64 h-72 fixed top-16 right-2 shadow-lg border border-gray-200 z-20"
         >
           <motion.div
             initial={{ x: "-120%", opacity: 0 }}
@@ -46,52 +56,6 @@ function Profile({ content }: { content: string }) {
           exit={{ opacity: 0, x: -20 }}
         >
           <UserProfile />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-let bookmarks: string[] = [];
-for (let i = 0; i < 10; i++) {
-  bookmarks.push("bookmark " + (i + 1));
-}
-function Bookmarks({ content }: { content: "bookmarks" }) {
-  return (
-    <AnimatePresence>
-      {content === "bookmarks" && (
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          className=" overflow-scroll h-full"
-        >
-          {bookmarks.map((bookmark, i) => (
-            <motion.div
-              initial={{ x: 100 }}
-              animate={{ x: 0 }}
-              transition={{ delay: i / 10, duration: (i + 8) / 10 }}
-              className="rounded-lg p-2 border-primary border-2 my-1 cursor-pointer hover:bg-primary hover:text-white active:hover:transition-all active:hover:duration-200 active:bg-white active:scale-95 active:text-gray-400"
-            >
-              {bookmark}
-            </motion.div>
-          ))}
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-function Notifications({ content }: { content: "notifications" }) {
-  return (
-    <AnimatePresence>
-      {content === "notifications" && (
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-        >
-          <div>Notifications</div>
         </motion.div>
       )}
     </AnimatePresence>

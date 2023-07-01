@@ -1,5 +1,11 @@
 type Booking = {
+  uid: string;
+  firstname: string;
+  lastname: string;
+  contact: string;
+  hotel: Hotel;
   checkIn: string;
   checkOut: string;
-  price: number;
+  total: number;
+  vat: string;
 };

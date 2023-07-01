@@ -5,7 +5,7 @@ const Close = ({ close }: CloseType) => {
   return (
     <button
       className={
-        "text-3xl text-gray-600 active:scale-90 transition-all duration-150 hover:scale-110"
+        "bg-body rounded-full text-3xl text-gray-600 active:scale-90 transition-all duration-150 hover:scale-110"
       }
       onClick={() => close()}
       title="close"

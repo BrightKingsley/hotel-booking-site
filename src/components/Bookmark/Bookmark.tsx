@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, ModalContext } from "@/context";
-import { UpdateUser } from "@/utils";
+import { addToBookmarks, removeFromBookmarks } from "@/utils";
 import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 
 export default function Bookmark({ hotelId }: { hotelId: string }) {
@@ -20,7 +20,27 @@ export default function Bookmark({ hotelId }: { hotelId: string }) {
     navigate("/auth/login");
   };
 
-  const handleClick = () => {
+  useEffect(() => {
+    const hasBookmark = user?.bookmarks?.includes(hotelId);
+    hasBookmark ? setBookmarked(true) : setBookmarked(false);
+  }, [user?.bookmarks, hotelId]);
+
+  const toggleBookmark = async () => {
+    if (!bookmarked) {
+      const result: User | string = await addToBookmarks(hotelId);
+      typeof result != "string" && setBookmarked(true);
+      return;
+    }
+
+    if (bookmarked) {
+      const result: User | string = await removeFromBookmarks(hotelId);
+      typeof result != "string" && setBookmarked(false);
+      return;
+      // setUserById(user.uid, token);
+    }
+  };
+
+  const handleBookmark = () => {
     user
       ? toggleBookmark()
       : triggerModal({
@@ -35,32 +55,15 @@ export default function Bookmark({ hotelId }: { hotelId: string }) {
     hasBookmark ? setBookmarked(true) : setBookmarked(false);
   }, [user?.bookmarks, hotelId]);
 
-  const toggleBookmark = async () => {
-    if (!bookmarked) {
-      const result: User | string = await new UpdateUser({
-        uid: user.uid,
-        token,
-      }).addToBookmarks(hotelId);
-      typeof result != "string" && setBookmarked(true);
-      // setUserById(user.uid, token);
-    }
-
-    if (bookmarked) {
-      const result: User | string = await new UpdateUser({
-        uid: user.uid,
-        token,
-      }).removeFromBookmarks(hotelId);
-      typeof result != "string" && setBookmarked(true);
-      // setUserById(user.uid, token);
-    }
-  };
-
-  // const handleBookmark = () => {
-  // };
-
   return (
-    <span onClick={handleClick} className={""} title="bookmark hotel">
-      <button>{bookmarked ? <IoBookmark /> : <IoBookmarkOutline />}</button>
-    </span>
+    <button
+      onClick={handleBookmark}
+      className={
+        "text-primary text-2xl active:text-white active:bg-gradient-primary p-1 rounded-md transition-all duration-100 hover:bg-primary/10"
+      }
+      title="bookmark hotel"
+    >
+      {bookmarked ? <IoBookmark /> : <IoBookmarkOutline />}
+    </button>
   );
 }

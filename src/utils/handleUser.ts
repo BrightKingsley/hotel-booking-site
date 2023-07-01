@@ -2,12 +2,35 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { db, storage } from "@/api";
 import {
   arrayUnion,
+  arrayRemove,
   doc,
+  getDoc,
   serverTimestamp,
   Timestamp,
   updateDoc,
 } from "@firebase/firestore";
 
+export const getUser = async (userId: string) => {
+  try {
+    // Retrieve the document using its ID
+    const docRef = doc(db, "users", userId);
+    const snapshot = await getDoc(docRef);
+
+    // Check if the document exists
+    if (snapshot.exists()) {
+      // Document found, return its data
+      return snapshot.data();
+    } else {
+      throw new Error("Document does not exist.");
+    }
+  } catch (error) {
+    // Handle any errors that occur during the retrieval
+    console.error("Error retrieving hotel document:", error);
+    return null;
+  }
+};
+
+// NOTE Comeback for Change password logic
 export const updateUser = async ({
   uid = "",
   image,
@@ -21,26 +44,6 @@ export const updateUser = async ({
 }) => {
   try {
     let newDoc;
-    if (image) {
-      const storageRef = ref(storage, "//uuid() or some random ID"); 
-
-      //   const uploadTask = await uploadBytesResumable(storageRef, image);
-
-      uploadBytesResumable(storageRef, image).then(() => {
-        getDownloadURL(storageRef).then(async (downloadURL) => {
-          newDoc = await updateDoc(doc(db, "users", uid), {
-            image: downloadURL,
-          });
-        });
-      });
-      return newDoc;
-    }
-    if (bookmark) {
-      newDoc = await updateDoc(doc(db, "users", uid), {
-        bookmarks: arrayUnion(bookmark),
-      });
-      return newDoc;
-    }
     if (password) {
       newDoc = await updateDoc(doc(db, "users", uid), {
         password: password,
@@ -53,48 +56,65 @@ export const updateUser = async ({
   }
 };
 
-export class UpdateUser {
-  _uid;
-  _token;
-  constructor({ uid, token }: { uid: string; token: string }) {
-    this._uid = uid;
-    this._token = token;
-  }
+export const updatePhotoURL = ({
+  uid,
+  image,
+}: {
+  uid: string;
+  image: Blob | Uint8Array | ArrayBuffer | File;
+}) => {
+  let newDoc;
+  const storageRef = ref(storage, "//uuid() or some random ID");
 
-  async addToBookmarks(id: string): Promise<User | string> {
-    try {
-      //add some logic to check if the id is a valid hotel id
-      const docExists = true;
-      if (!docExists) {
-        return "unable to add bookmark";
-      }
+  //   const uploadTask = await uploadBytesResumable(storageRef, image);
 
-      //NOTE RE-check this!!!
-      const newDoc: any = await updateDoc(doc(db, "users", this._uid), {
-        bookmarks: arrayUnion(id),
+  uploadBytesResumable(storageRef, image).then(() => {
+    getDownloadURL(storageRef).then(async (downloadURL) => {
+      newDoc = await updateDoc(doc(db, "users", uid), {
+        image: downloadURL,
       });
-      return newDoc;
-    } catch (error) {
+    });
+  });
+  return newDoc;
+};
+
+export const addToBookmarks = async (id: string): Promise<User | string> => {
+  try {
+    //add some logic to check if the id is a valid hotel id
+    console.log("Bookmarking", id);
+    const docExists = true;
+    if (!docExists) {
+      // return Promise.resolve("unable to add bookmark");
       return "unable to add bookmark";
     }
+
+    //NOTE RE-check this!!!
+    const newDoc: any = await updateDoc(doc(db, "users", id), {
+      bookmarks: arrayUnion(id),
+    });
+    return newDoc;
+  } catch (error) {
+    return "unable to add bookmark";
   }
+};
 
-  // NOTE : Implement the delete functionality
-  async removeFromBookmarks(id: string): Promise<User | string> {
-    try {
-      //add some logic to check if the id is a valid hotel id
-      const docExists = true;
-      if (!docExists) {
-        return "unable to add bookmark";
-      }
-
-      //NOTE RE-check this!!!
-      const newDoc: any = await updateDoc(doc(db, "users", this._uid), {
-        bookmarks: arrayUnion(id),
-      });
-      return newDoc;
-    } catch (error) {
-      return "unable to add bookmark";
+// NOTE : Implement the delete functionality
+export const removeFromBookmarks = async (
+  id: string
+): Promise<User | string> => {
+  try {
+    //add some logic to check if the id is a valid hotel id
+    const docExists = true;
+    if (!docExists) {
+      throw new Error("unable to add bookmark");
     }
+
+    //NOTE RE-check this!!!
+    const newDoc: any = await updateDoc(doc(db, "users", id), {
+      bookmarks: arrayRemove(id), // removes "1" from the array
+    });
+    return newDoc;
+  } catch (error) {
+    return "unable to add bookmark:" + error;
   }
-}
+};

@@ -1,24 +1,26 @@
 import { type } from "os";
-import React, { ChangeEventHandler, useEffect, useState } from "react";
-// import RangeSlider from "react-range-slider-input/dist/components/RangeSlider";
-// import RangeSlider from "react-range-slider-input";
-// import "./RangeInput.css";
-import MySelect from "react-select";
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  useEffect,
+  useState,
+} from "react";
+//@ts-ignore
+import RangeSlider from "react-range-slider-input";
+import "./rangeInputStyles.css";
+import Select from "react-select";
+import { PRIMARY_COLOR } from "@/constants";
 
-type RangeInput = {
+type RangeInputType = {
   getRangeValue?: Function;
-  setRangeValue?: Function;
+  rangeValue?: [number, number];
   min?: number;
   max?: number;
   step?: number;
 };
 
-type CheckboxInput = {
-  label: string;
-};
-
 type SelectType = {
-  options?: string[];
+  options?: { value: string; label: string }[];
   getSelected?: Function;
   selected?: string;
   placeholder?: string;
@@ -49,13 +51,19 @@ type ImageInputType = {
   hide?: boolean;
 };
 
+type CheckboxType = {
+  label: string;
+  value: string;
+  getValue?: ChangeEventHandler<HTMLInputElement>;
+};
+
 interface InputType
-  extends RangeInput,
-    CheckboxInput,
+  extends RangeInputType,
+    CheckboxType,
     SelectType,
     ImageInputType,
     NormalInputType {
-  type?: string;
+  type?: "text" | "range" | "textarea" | "image" | "select" | "checkbox";
   children?: React.ReactNode;
   className?: string;
   value: string;
@@ -79,13 +87,14 @@ export default function Input({
   index,
   onClick,
   getRangeValue,
-  setRangeValue,
+  rangeValue,
   min,
   max,
   step,
   options,
   placeholder,
   selected,
+  label,
 }: InputType) {
   const getValue = (e: any) => {
     setValue && setValue(e.target.value);
@@ -122,13 +131,29 @@ export default function Input({
         />
       );
 
+    case "range":
+      return (
+        <RangeInput
+          getRangeValue={getRangeValue}
+          rangeValue={rangeValue}
+          min={min}
+          max={max}
+          step={step}
+        />
+      );
+
     case "select":
-      <Select
-        getSelected={getSelection}
-        options={options}
-        placeholder={placeholder}
-        selected={selected}
-      />;
+      return (
+        <MySelect
+          getSelected={getSelection}
+          options={options}
+          placeholder={placeholder}
+          selected={selected}
+        />
+      );
+
+    case "checkbox":
+      <Checkbox getValue={getValue} label={label} value={value} />;
 
     default:
       return (
@@ -145,19 +170,19 @@ export default function Input({
       break;
   }
 
-  return (
-    <div className={` ${className} bg-body outline-primary p-2`}>
-      <label
-        onClick={() => {
-          console.log("This=>", index);
-          currIndex = index;
-        }}
-        htmlFor={name}
-      >
-        {children}
-      </label>
-    </div>
-  );
+  // return (
+  //   <div className={` ${className} bg-body outline-primary p-2`}>
+  //     <label
+  //       onClick={() => {
+  //         console.log("This=>", index);
+  //         currIndex = index;
+  //       }}
+  //       htmlFor={name}
+  //     >
+  //       {children}
+  //     </label>
+  //   </div>
+  // );
 }
 
 function TextArea({ name, value, getValue }: TextAreaType) {
@@ -206,55 +231,48 @@ function ImageInput({
       accept="image/*"
       multiple={multiple}
       onInput={(e) => {
-        getImages(
-          // @ts-ignore
-          Object.values(e.target.files).map((image) => image),
-          currIndex
-        );
+        getImages &&
+          getImages(
+            // @ts-ignore
+            Object.values(e.target.files).map((image) => image),
+            currIndex
+          );
       }}
       style={{ display: hide ? "none" : "contents" }}
     />
   );
 }
 
-// function RangeInput({
-//   getRangeValue,
-//   setRangeValue,
-//   min,
-//   max,
-//   step,
-// }: RangeInput) {
-//   return (
-//     <RangeSlider
-//       min={min}
-//       max={max}
-//       step={step}
-//       value={setRangeValue}
-//       onInput={(e: []) => getRangeValue(e)}
-//     />
-//   );
-// }
-
-// function Checkbox({ label }: CheckboxInput) {
-//   return (
-//     <div className="">
-//       <input type="checkbox" onChange={() => {}} />
-//       <label htmlFor="con">
-//         <small> {label}</small>
-//       </label>
-//     </div>
-//   );
-// }
-
-function Select({ options, getSelected, selected, placeholder }: SelectType) {
+function RangeInput({
+  getRangeValue,
+  rangeValue,
+  min,
+  max,
+  step,
+}: RangeInputType) {
   return (
-    <MySelect
+    <div className="rangeSlider">
+      <RangeSlider
+        min={min}
+        max={max}
+        step={step}
+        value={rangeValue}
+        onInput={(e: []) => getRangeValue && getRangeValue(e)}
+      />
+    </div>
+  );
+}
+
+function MySelect({ options, getSelected, selected, placeholder }: SelectType) {
+  return (
+    <Select
+      className=""
       styles={{
         control: (baseStyles: {}, state: any) => {
           return {
             ...baseStyles,
-            "&:hover": { borderColor: "#0b947e" },
-            borderColor: state.mouseOver ? "#0b947e" : "transparent",
+            "&:hover": { borderColor: PRIMARY_COLOR(1) },
+            borderColor: state.mouseOver ? PRIMARY_COLOR(1) : "transparent",
             outline: "none",
             width: "100%",
             padding: 0,
@@ -267,8 +285,9 @@ function Select({ options, getSelected, selected, placeholder }: SelectType) {
           ...theme,
           colors: {
             ...theme.colors,
-            primary25: "#e1fdf8",
-            primary: "#0b947e",
+            primary25: PRIMARY_COLOR(0.1),
+            primary: PRIMARY_COLOR(1),
+            primary50: PRIMARY_COLOR(0.5),
           },
           spacing: {
             controlHeight: 30,
@@ -277,11 +296,30 @@ function Select({ options, getSelected, selected, placeholder }: SelectType) {
           },
         };
       }}
-      defaultValue={options[0]}
+      defaultValue={options && options[0]}
       options={options}
       placeholder={placeholder}
-      onChange={(e: any) => getSelected(e.value)}
+      onChange={(e: any) => getSelected && getSelected(e.value)}
       // value={selected}
     />
+  );
+}
+
+function Checkbox({ label, value, getValue }: CheckboxType) {
+  return (
+    <div className={""}>
+      <input
+        type="checkbox"
+        value={value}
+        //NOTE check type
+        onChange={(e: any) => {
+          getValue && getValue(e.target.value);
+        }}
+      />
+      {/* NOTE  check this */}
+      <label htmlFor="con">
+        <small> {label}</small>
+      </label>
+    </div>
   );
 }

@@ -3,6 +3,7 @@ export { default as Avatar } from "./Avatar";
 export { default as Bookmark } from "./Bookmark";
 export { default as Button } from "./Button";
 export { default as Card } from "./Card";
+export { default as Carousel } from "./Carousel";
 export { default as Close } from "./Close";
 export { default as Dropdown } from "./Dropdown";
 export { default as Header } from "./Header/Header";
