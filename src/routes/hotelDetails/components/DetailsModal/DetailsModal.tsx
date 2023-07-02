@@ -19,8 +19,6 @@ export default function DetailsModal({
         animate={{ opacity: 1, y: 0 }}
         out={{ opacity: 0, y: 100 }}
         show={show}
-        drag="y"
-        handleDragEnd={handleShowModal}
         className=" relative overflow-auto w-[36rem] h-[90%] mt-[3.7rem] rounded-md z-10 bg-body p-4 mx-3"
       >
         {children}
