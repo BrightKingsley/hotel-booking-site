@@ -72,7 +72,7 @@ export default function Login() {
           Sign Up
         </span>
       </p>
-      <div className="bg-body h-[80%] mx-auto w-[80vw] rounded-lg overflow-clip flex items-center justify-center">
+      <div className="bg-body h-[95%] sm:h-[80%] mx-auto w-[90vw] sm:w-[80vw] rounded-lg overflow-clip flex items-center justify-center">
         <motion.div
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -86,7 +86,7 @@ export default function Login() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
           onSubmit={handleSubmit}
-          className="flex sm:w-1/2 flex-col justify-center space-y-2 sm:p-4 w-full"
+          className="flex sm:w-1/2 flex-col justify-center space-y-2 p-1 sm:p-4 w-full"
         >
           <h2 className="mx-auto font-bold">Login</h2>
           <div className="relative flex flex-col items-center w-full">
