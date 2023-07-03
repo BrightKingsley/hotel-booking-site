@@ -9,6 +9,7 @@ import {
   Timestamp,
   updateDoc,
 } from "@firebase/firestore";
+import { User } from "@/models";
 
 export const getUser = async (userId: string) => {
   try {

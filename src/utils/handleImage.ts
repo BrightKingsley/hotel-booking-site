@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-let result;
+let result: any;
 export const readURI = async (e: ChangeEvent<HTMLInputElement>) => {
   if (e.target.files && e.target.files[0]) {
     let reader = new FileReader();
