@@ -16,8 +16,6 @@ export const getHotels = async ({
     const hotelCollectionRef = collection(db, "hotels");
     const querySnapshot = await getDocs(hotelCollectionRef);
 
-    console.log(type, price, ratings);
-
     // Extract the data from each document
     documents = querySnapshot.docs.map((doc) => doc.data());
 
@@ -36,8 +34,6 @@ export const getHotels = async ({
         (doc: any) => doc.ratings >= ratings[0] && doc.ratings <= ratings[1]
       );
     }
-    console.log("documents", documents);
-
     return documents;
   } catch (error) {
     // Handle any errors that occur during the retrieval

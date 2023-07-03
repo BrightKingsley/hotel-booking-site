@@ -160,7 +160,6 @@ export const AuthContextProvider = ({
         password
       );
 
-      console.log("CREDENTIAL", userCredential);
 
       // Signed in
       const createdUser = await createUserDocument({
@@ -210,7 +209,6 @@ export const AuthContextProvider = ({
       addItemToLocalStorage({ item: createdUser.uid, name: "uid" });
       return createdUser;
     } catch (err: any) {
-      console.log("ERROR", error);
       setError(err.message);
       setLoading(false);
       triggerNotification("sign up failed");

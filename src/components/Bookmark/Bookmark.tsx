@@ -26,7 +26,7 @@ export default function Bookmark({ hotelId }: { hotelId: string }) {
   useEffect(() => {
     if (user?.uid) {
       const unsub = onSnapshot(doc(db, "users", user.uid), (doc) => {
-        if (doc.data()?.bookmarks.contains(hotelId)) {
+        if (doc.data()?.bookmarks.includes(hotelId)) {
           setBookmarked(true);
         } else {
           setBookmarked(false);

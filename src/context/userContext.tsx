@@ -36,7 +36,6 @@ export const UserContextProvider = ({
       try {
         const userDocument = await getUser(savedUserID);
         if (!userDocument) return;
-        console.log("");
 
         return setUser(userDocument);
         //NOTE comeback to this

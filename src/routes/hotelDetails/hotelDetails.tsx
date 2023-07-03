@@ -40,7 +40,6 @@ export default function HotelDetails() {
   }, []);
 
   useEffect(() => {
-    console.log("SOURCE===>", source, bookHotelClicked, currentHotel);
     bookHotelClicked && currentHotel && source && setShowBookingForm(true);
     bookHotelClicked = false;
   }, [currentHotel, source]);
@@ -77,7 +76,6 @@ export default function HotelDetails() {
   };
 
   const handleShowReviews = () => {
-    console.log("SHOWING__REVIEWS", showReviews, showBookingForm);
     !showBookingForm && !showReviews
       ? setShowReviews(true)
       : setShowReviews(false);

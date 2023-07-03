@@ -27,7 +27,6 @@ export default function UserProfile() {
   // const imageURI = useImageURI(e);
 
   useEffect(() => {
-    console.log("USER:===>", user);
   }, []);
 
   const readURI = (e: ChangeEvent<HTMLInputElement>) => {

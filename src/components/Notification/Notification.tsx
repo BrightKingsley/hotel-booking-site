@@ -13,7 +13,6 @@ const Notification = () => {
     useContext(NotificationContext);
 
   useEffect(() => {
-    console.log("NOTIFICATION_SHOW:", showNotification);
   }, [showNotification]);
 
   return createPortal(

@@ -16,10 +16,6 @@ export default function RatingsView({
   show,
   handleShowReviews,
 }: RatingsViewType) {
-  useEffect(() => {
-    console.log(hotel?.userReviews?.length);
-  }, [hotel?.reviews]);
-
   return hotel ? (
     <DetailsModal show={show} handleShowModal={handleShowReviews}>
       <div className="fixed right-4 z-20 overflow-clip">
@@ -28,7 +24,7 @@ export default function RatingsView({
 
       <Accordion allowZeroExpanded allowMultipleExpanded className="space-y-4">
         {hotel.userReviews?.map((review) => (
-          <AccordionItem>
+          <AccordionItem key={Math.random()}>
             <AccordionItemHeading>
               <AccordionItemButton className=" p-2 border-b-2 border-primary  bg-gray-300 hover:rounded-t-md text-gray-600 hover:bg-primary hover:text-white transition-all duration-200">
                 <div className="flex justify-between items-center">
