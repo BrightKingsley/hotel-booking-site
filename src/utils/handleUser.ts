@@ -72,7 +72,7 @@ export const updatePhotoURL = ({
   uploadBytesResumable(storageRef, image).then(() => {
     getDownloadURL(storageRef).then(async (downloadURL) => {
       newDoc = await updateDoc(doc(db, "users", uid), {
-        image: downloadURL,
+        photoURL: downloadURL,
       });
     });
   });
