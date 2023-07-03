@@ -32,7 +32,7 @@
 }
 .range-slider .range-slider__thumb:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 6px rgba(33, 150, 243, 0.5);
+  /* box-shadow: 0 0 0 6px rgba(33, 150, 243, 0.5); */
 }
 .range-slider[data-vertical] .range-slider__thumb {
   left: 50%;

@@ -39,8 +39,18 @@ export const HotelContextProvider = ({
   // const token = localStorage.getItem("token");
   const { token } = useContext(AuthContext);
 
-  const loadHotels = async (sort: string) => {
-    const hotels = await getHotels(sort, params);
+  const loadHotels = async ({
+    price,
+    reviews,
+    sort,
+    type,
+  }: {
+    price?: [number, number];
+    reviews?: [number, number];
+    sort?: string;
+    type?: string;
+  }) => {
+    const hotels = await getHotels({ price, reviews, sort, type });
     setHotels(hotels);
     // setHotels(hotels);
   };

@@ -6,23 +6,28 @@ import CategorySelect from "../CategorySelect";
 import { Button } from "@/components";
 import { BiGridHorizontal, BiMenu } from "react-icons/bi";
 
-const priceMax = 10000;
+const priceMax = 100000;
 const priceMin = 0;
-const areaMax = 1000;
-const areaMin = 10;
+const reviewsMin = 5;
+const reviewsMax = 1;
 
 export default function FilterMenu({
   handleShowNav,
   showNav,
+  handleFilters,
 }: {
   handleShowNav: Function;
   showNav: boolean;
+  handleFilters: Function;
 }) {
   const [priceRange, setPriceRange] = useState<[number, number]>([
     priceMin,
     priceMax,
   ]);
-  const [areaRange, setAreaRange] = useState<[number, number]>([200, 5000]);
+  const [reviewsRange, setReviewsRange] = useState<[number, number]>([
+    reviewsMin,
+    reviewsMax,
+  ]);
   const [windowWidth, setWindowWidth] = useState(0);
   const [type, setType] = useState("");
   // const [type, setType] = useState("");
@@ -30,7 +35,7 @@ export default function FilterMenu({
 
   const [filters, setFilters] = useState({
     priceRange: { min: 0, max: 0 },
-    areaRange: { min: 0, max: 0 },
+    reviewsRange: { min: 0, max: 0 },
     type: "",
   });
 
@@ -48,8 +53,8 @@ export default function FilterMenu({
     setPriceRange(value);
   };
 
-  const getAreaRange = (value: [number, number]) => {
-    setAreaRange(value);
+  const getReviewsRange = (value: [number, number]) => {
+    setReviewsRange(value);
   };
 
   const setShowNav = () => {
@@ -180,14 +185,14 @@ export default function FilterMenu({
           </div>
         </div>
         <div className={"space-y-2 py-2"}>
-          <p className="text-[0.8rem] font-[500]">Property area Range</p>
+          <p className="text-[0.8rem] font-[500]">Reviews Range</p>
           <Input
             type="range"
-            getRangeValue={getAreaRange}
-            rangeValue={areaRange}
-            min={areaMin}
-            max={areaMax}
-            step={10}
+            getRangeValue={getReviewsRange}
+            rangeValue={reviewsRange}
+            min={reviewsMax}
+            max={reviewsMin}
+            step={1}
           />
           <div className={"flex justify-between items-center gap-4"}>
             <input
@@ -197,13 +202,13 @@ export default function FilterMenu({
               type="number"
               name=""
               id=""
-              value={areaRange[0]}
+              value={reviewsRange[0]}
               onChange={(e) =>
-                setAreaRange((prevRange) => {
+                setReviewsRange((prevRange) => {
                   const min = e.target.valueAsNumber;
-                  if (min && min >= areaMin && typeof min === "number")
+                  if (min && min >= reviewsMax && typeof min === "number")
                     return [min, prevRange[1]];
-                  else return [areaMin, prevRange[1]];
+                  else return [reviewsMax, prevRange[1]];
                 })
               }
             />
@@ -214,13 +219,13 @@ export default function FilterMenu({
               type="number"
               name=""
               id=""
-              value={areaRange[1]}
+              value={reviewsRange[1]}
               onChange={(e) =>
-                setAreaRange((prevRange) => {
+                setReviewsRange((prevRange) => {
                   const max = e.target.valueAsNumber;
-                  if (max && max <= areaMax && typeof max === "number")
+                  if (max && max <= reviewsMin && typeof max === "number")
                     return [prevRange[0], max];
-                  else return [prevRange[0], areaMax];
+                  else return [prevRange[0], reviewsMin];
                 })
               }
             />
@@ -228,17 +233,17 @@ export default function FilterMenu({
               <Button
                 full={true}
                 onClick={() => {
-                  return setFilters((prev) => ({
+                  setFilters((prev) => ({
                     ...prev,
-                    areaRange: {
-                      min: areaRange[0],
-                      max: areaRange[1],
+                    reviewsRange: {
+                      min: reviewsRange[0],
+                      max: reviewsRange[1],
                     },
                   }));
 
                   // setFilters((prev) => {
                   //   const newFilters =
-                  //     prev + `&minArea=${areaRange[0]}&maxArea=${areaRange[1]}`;
+                  //     prev + `&minArea=${reviewsRange[0]}&maxArea=${reviewsRange[1]}`;
                   //   return newFilters;
                   // });
                 }}
@@ -249,17 +254,25 @@ export default function FilterMenu({
           </div>
         </div>
         <div className={""}></div>
-        <div className={"py-2"}>
+        <div className={"py-2 flex gap-2"}>
           <Button
             full={true}
             onClick={() => {
               // setParams("");
               setType("");
               setPriceRange([priceMin, priceMax]);
-              setAreaRange([areaMin, areaMax]);
+              setReviewsRange([reviewsMax, reviewsMin]);
             }}
           >
             RESET
+          </Button>
+          <Button
+            full={true}
+            onClick={() =>
+              handleFilters({ price: priceRange, reviews: reviewsRange, type })
+            }
+          >
+            FILTER
           </Button>
         </div>
       </div>

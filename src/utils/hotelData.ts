@@ -3,14 +3,41 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 // import hotels from "@/data/hotels-min.json";
 import hotels from "@/data/hotels.json";
 
-export const getHotels = async (sort?: string, params?: string) => {
+export const getHotels = async ({
+  // sort,
+  type,
+  price,
+  reviews,
+}: {
+  sort?: string;
+  type?: string;
+  reviews?: [number, number];
+  price?: [number, number];
+}) => {
   try {
+    let documents: any;
     const hotelCollectionRef = collection(db, "hotels");
     const querySnapshot = await getDocs(hotelCollectionRef);
 
     // Extract the data from each document
-    const documents = querySnapshot.docs.map((doc) => doc.data());
+    documents = querySnapshot.docs.map((doc) => doc.data());
     console.log("documents", documents);
+
+    if (type) {
+      documents = documents.filter((doc: any) => doc.type === type);
+    }
+
+    if (price) {
+      documents = documents.filter(
+        (doc: any) => doc.price >= price[0] && doc.price <= price[1]
+      );
+    }
+
+    if (reviews) {
+      documents = documents.filter(
+        (doc: any) => doc.reviews >= reviews[0] && doc.reviews <= reviews[1]
+      );
+    }
 
     return documents;
   } catch (error) {

@@ -43,7 +43,7 @@ export default function Hotels() {
     setLoading(true);
     const timeout = setTimeout(() => {
       setLoading(false);
-      loadHotels();
+      loadHotels({});
     }, 1000);
     return () => {
       clearTimeout(timeout);
@@ -73,6 +73,14 @@ export default function Hotels() {
     navigate(`/app/hotels/chat`);
   };
 
+  const handleFilter = (filters: {
+    price: [number, number];
+    reviews: [number, number];
+    type: string;
+  }) => {
+    loadHotels({ filters });
+  };
+
   //h-[calc(100vh-3.8rem)]
 
   return (
@@ -87,7 +95,11 @@ export default function Hotels() {
         </span>
       </button>
       <div className="">
-        <FilterMenu handleShowNav={setShowNav} showNav={showNav} />
+        <FilterMenu
+          handleShowNav={setShowNav}
+          showNav={showNav}
+          handleFilters={handleFilter}
+        />
       </div>
       <div className="h-[calc(100%-4rem)]">
         <div className="fixed sm:static sm:bg-grey top-16 z-10 w-full flex justify-between items-center py-1 px-2">

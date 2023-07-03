@@ -11,6 +11,7 @@ import { useButtonStyle } from "@/hooks";
 import { BiCart } from "react-icons/bi";
 import { IoCart } from "react-icons/io5";
 import { importJSONToFirestore } from "@/api";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 const Header = () => {
   const [showPanel, setShowPanel] = useState(false);

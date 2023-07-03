@@ -24,18 +24,45 @@ export default function Bookmark({ hotelId }: { hotelId: string }) {
   };
 
   useEffect(() => {
-    // const unsub = onSnapshot(
-    //   doc(db, "users", user?.uid ? user.uid : ""),
-    //   (doc) => {
-    //     doc.data()?.bookmarks.includes(hotelId)
-    //       ? setBookmarked(true)
-    //       : setBookmarked(false);
-    //   }
-    // );
-    // return () => {
-    //   unsub();
-    // };
-  });
+    if (user?.uid) {
+      const unsub = onSnapshot(doc(db, "users", user.uid), (doc) => {
+        if (doc.data()?.bookmarks.contains(hotelId)) {
+          setBookmarked(true);
+        } else {
+          setBookmarked(false);
+        }
+      });
+      return () => unsub();
+    }
+  }, []);
+
+  /* 
+  import { useState, useEffect } from 'react';
+import { db } from './firebase';
+
+function MyComponent() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = db.collection('users')
+      .doc('')
+      .onSnapshot((doc) => {
+        setData(doc.data().myNestedArray);
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <div>
+      {data.map((item) => (
+        <p key={item.id}>{item.name}</p>
+      ))}
+    </div>
+  );
+}
+
+  */
 
   useEffect(() => {
     const hasBookmark = user?.bookmarks?.includes(hotelId);
