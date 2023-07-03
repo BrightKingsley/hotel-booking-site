@@ -25,7 +25,7 @@ export default function Sidebar({
   handleShowSidebar: Function;
 }) {
   const [openTab, setOpenaTab] = useState(true);
-  const [hotels, setHotels] = useState<Hotel[] | []>([]);
+  const [hotels, setHotels] = useState<any>([]);
 
   console.log("bookings", bookings);
 
