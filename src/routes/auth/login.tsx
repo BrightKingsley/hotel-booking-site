@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
-import { Hands, Girl, Coding } from "@/assets";
+import { Signup1, Girl, Coding } from "@/assets";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "@/context";
 import { useButtonStyle } from "@/hooks";
@@ -79,14 +79,14 @@ export default function Login() {
           transition={{ duration: 0.5 }}
           className="flex-1 w-1/2 h-full hidden md:inline-block"
         >
-          <img src={Hands} className="w-full h-full" />
+          <img src={Signup1} className="w-full h-full" />
         </motion.div>
         <motion.form
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
           onSubmit={handleSubmit}
-          className="flex sm:w-1/2 flex-col justify-center space-y-2 p-4 w-full"
+          className="flex sm:w-1/2 flex-col justify-center space-y-2 sm:p-4 w-full"
         >
           <h2 className="mx-auto font-bold">Login</h2>
           <div className="relative flex flex-col items-center w-full">
