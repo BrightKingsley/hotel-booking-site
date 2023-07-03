@@ -13,16 +13,7 @@ import {
 } from "./context";
 
 // routes
-import {
-  Home,
-  Hotels,
-  Error,
-  App,
-  HotelDetails,
-  Root,
-  Chat,
-  Bookings,
-} from "./routes";
+import { Home, Hotels, App, HotelDetails, Root, Bookings } from "./routes";
 
 //style
 import "./index.css";
@@ -57,14 +48,14 @@ const router = createBrowserRouter([
             path: "hotels/bookings/:id",
             element: <Bookings />,
           },
-          {
-            path: "hotels/chat",
-            element: <Chat />,
-          },
-          {
-            path: "hotels/chat/:id",
-            element: <Chat />,
-          },
+          // {
+          //   path: "hotels/chat",
+          //   element: <Chat />,
+          // },
+          // {
+          //   path: "hotels/chat/:id",
+          //   element: <Chat />,
+          // },
 
           {
             path: "hotels/:id",

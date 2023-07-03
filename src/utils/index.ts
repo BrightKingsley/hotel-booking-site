@@ -14,4 +14,3 @@ export {
 } from "./localStorage";
 export { bookHotel, getBookings } from "./booking";
 export { navigateLogin } from "./navigate";
-// export { getChats, getMessages, handleSendMessage } from "./handleChat";
