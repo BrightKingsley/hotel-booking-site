@@ -30,10 +30,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    document.title = "Raale. || Login";
-  }, []);
-
-  useEffect(() => {
     if (!user) return;
 
     setEmail("");
