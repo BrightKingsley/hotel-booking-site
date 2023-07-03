@@ -41,7 +41,7 @@ const Header = () => {
       // exit={{ x: "-100%", opacity: 0 }}
       className="fixed bg-body w-full flex justify-between items-center  px-2 md:px-16 z-50 p-2 transition-all duration-300 border border-b  "
     >
-      <Link to={"/"} className="flex items-end gap-2">
+      <Link to={"/app/hotels"} className="flex items-end gap-2">
         <div className="font-bold w-8">
           <img src={Logo} />
         </div>
