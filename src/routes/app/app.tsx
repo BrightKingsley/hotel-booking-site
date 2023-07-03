@@ -1,14 +1,8 @@
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Header } from "@/components";
-import { Navbar } from "../root/components";
 
 export default function App() {
-  // useEffect(() => {
-  //   const body = document.querySelector("body")!;
-  //   body.style.height = "100vh";
-  // });
-
   return (
     <>
       <Header />

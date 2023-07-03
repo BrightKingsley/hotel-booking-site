@@ -18,6 +18,10 @@ import { navigateLogin } from "@/utils";
 import { Hotel as HotelType } from "@/models";
 
 export default function Hotels() {
+  useEffect(() => {
+    document.title = "Hotel Haven || All";
+  }, []);
+
   //context
   const { triggerModal } = useContext(ModalContext);
   const { user } = useContext(AuthContext);

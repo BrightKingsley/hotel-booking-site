@@ -11,6 +11,10 @@ import { FaGoogle } from "react-icons/fa";
 const inputStyles = `focus:outline-primary p-2 rounded-md w-full bg-primary/10 focus:bg-white transition-all duration-200 `;
 
 export default function Signup() {
+  useEffect(() => {
+    document.title = "Hotel Haven || All";
+  }, []);
+
   const navigate = useNavigate();
   const location = useLocation();
 

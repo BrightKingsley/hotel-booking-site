@@ -24,6 +24,9 @@ const booking = {
 };
 
 export default function Bookings() {
+  useEffect(() => {
+    document.title = "Hotel Haven || My Bookings";
+  }, []);
   const { user } = useContext(AuthContext);
   const { triggerNotification } = useContext(NotificationContext);
 

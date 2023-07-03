@@ -13,6 +13,9 @@ import { inputStyles } from "@/constants";
 
 export default function Login() {
   // const buttonStyles = useButtonStyle({ color: "primary", full: true });
+  useEffect(() => {
+    document.title = "Hotel Haven || Login";
+  }, []);
 
   const navigate = useNavigate();
   const location = useLocation();

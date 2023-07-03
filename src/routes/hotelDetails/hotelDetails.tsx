@@ -35,8 +35,7 @@ export default function HotelDetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("PARAMS", id);
-    document.title = "Hotel Booking || Details";
+    document.title = "Hotel Haven || Details";
     loadHotel(id);
   }, []);
 
