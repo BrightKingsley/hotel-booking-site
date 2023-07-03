@@ -139,7 +139,7 @@ export default function Bookings() {
                         <Sidebar
                           handleShowSidebar={setShowSidebar}
                           bookings={
-                            bookings
+                            bookings && bookings.length > 0
                               ? bookings.map((booking) => booking.hotelId)
                               : []
                           }
@@ -169,8 +169,7 @@ export default function Bookings() {
                       <Sidebar
                         handleShowSidebar={setShowSidebar}
                         bookings={
-                          bookings
-                            ? bookings.map((booking) => booking.hotelId)
+                          bookings && bookings.length > 0 ? bookings.map((booking) => booking.hotelId)
                             : []
                         }
                       />
