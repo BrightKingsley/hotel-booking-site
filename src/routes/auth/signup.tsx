@@ -2,7 +2,7 @@ import { FormEvent, useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context";
 import { useButtonStyle } from "@/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Signup2, Girl, Coding } from "@/assets";
+import { Signup2 } from "@/assets";
 import { AnimateInOut, Button } from "@/components";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import { motion } from "framer-motion";

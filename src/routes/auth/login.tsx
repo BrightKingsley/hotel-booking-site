@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
-import { Signup1, Girl, Coding } from "@/assets";
+import { Signup1 } from "@/assets";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "@/context";
 import { useButtonStyle } from "@/hooks";

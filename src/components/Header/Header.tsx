@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FaBookmark, FaSearch, FaUser } from "react-icons/fa";
 import Panel from "../Panel/Panel";
 import Media from "react-media";
-import { Girl, Logo } from "@/assets";
+import { Logo } from "@/assets";
 import { AuthContext } from "@/context";
 import { Link } from "react-router-dom";
 import { useButtonStyle } from "@/hooks";
