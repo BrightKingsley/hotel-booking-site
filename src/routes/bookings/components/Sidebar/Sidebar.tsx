@@ -45,7 +45,7 @@ export default function Sidebar({
         {(matches) => (
           <AnimatePresence>
             {openTab && (
-              <div className="w-full h-fit sm:h-full bg-body shadow-lg z-50 flex-1 overflow-auto ">
+              <div className="w-full h-fit sm:h-full pt-3 sm:pt-0 bg-body shadow-lg z-50 flex-1 overflow-auto ">
                 <div className="relative  w-full h-full px-2 py-10 ">
                   <ul className="">
                     {hotels && hotels.length > 0 ? hotels?.map((hotel:any, i:any) => (
