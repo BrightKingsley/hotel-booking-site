@@ -31,11 +31,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    document.title = "Raale. || Login";
-  }, []);
-
-  useEffect(() => {
-    document.title = "Raale. || Login";
+    document.title = "Hotel-Haven || Login";
   }, []);
 
   useEffect(() => {
