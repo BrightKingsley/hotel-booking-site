@@ -125,8 +125,8 @@ export default function UserProfile() {
           </div>
         </div>
         <div className="inline-block ml-4">
-          <h3>King</h3>
-          <p>stunt@gmail.com</p>
+          <h3>{user && user?.firstname ? user.firstname : ""}</h3>
+          <p>>{user && user?.email ? user.email : ""}</p>
         </div>
       </div>
       <div className="py-4 space-y-2">
