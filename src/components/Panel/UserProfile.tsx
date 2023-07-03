@@ -62,16 +62,7 @@ export default function UserProfile() {
             ) : (
               <FaUser />
             )}
-            {/* <img
-              src={
-                previewImage
-                  ? previewImage
-                  : user?.image && user?.image.length > 1
-                  ? user?.image
-                  : ""
-              }
-            /> */}
-            {/* <FaUser /> */}
+       
           </div>
           <div className="relative">
             <span
@@ -126,7 +117,7 @@ export default function UserProfile() {
         </div>
         <div className="inline-block ml-4">
           <h3>{user && user?.firstname ? user.firstname : ""}</h3>
-          <p>>{user && user?.email ? user.email : ""}</p>
+          <p>{user && user?.email ? user.email : ""}</p>
         </div>
       </div>
       <div className="py-4 space-y-2">
