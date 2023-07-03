@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@material-ui/icons": "^4.11.3",
     "@mobiscroll/react": "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-5.25.1.tgz",
     "dotenv": "^16.1.4",
     "firebase": "^9.22.2",
