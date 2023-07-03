@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Header,
   SectionFive,
@@ -10,6 +11,12 @@ import {
 } from "./components";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/app/hotels");
+  });
+
   return (
     <>
       {/* @ts-ignore */}

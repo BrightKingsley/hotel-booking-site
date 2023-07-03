@@ -1,8 +1,13 @@
-import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Header } from "@/components";
 
 export default function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/app/hotels");
+  });
   return (
     <>
       <Header />
