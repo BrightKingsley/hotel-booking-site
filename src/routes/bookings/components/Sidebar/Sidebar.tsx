@@ -48,7 +48,7 @@ export default function Sidebar({
               <div className="w-full h-fit sm:h-full bg-body shadow-lg z-50 flex-1 overflow-auto ">
                 <div className="relative  w-full h-full px-2 py-10 ">
                   <ul className="">
-                    {hotels?.map((hotel, i) => (
+                    {hotels?.map((hotel:any, i:any) => (
                       <li
                         key={hotel?.id}
                         className={`w-full flex relative items-center  h-full border-b-2  after:absolute after:inset-0 after:mx-auto after:w-0 after:h-[2px] after:top-[100%] after:bg-primary hover:after:w-full after:transition-all after:duration-300 after:ease-out transition-all duration-500 hotelList `}
