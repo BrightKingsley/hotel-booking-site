@@ -19,21 +19,21 @@ export const getHotels = async ({
     // Extract the data from each document
     documents = querySnapshot.docs.map((doc) => doc.data());
 
-    if (type) {
-      documents = documents.filter((doc: any) => doc.type === type);
-    }
+    //if (type) {
+     // documents = documents.filter((doc: any) => doc.type === type);
+    //}
 
-    if (price) {
-      documents = documents.filter(
-        (doc: any) => doc.price >= price[0] && doc.price <= price[1]
-      );
-    }
+    //if (price) {
+     // documents = documents.filter(
+       // (doc: any) => doc.price >= price[0] && doc.price <= price[1]
+      //);
+    //}
 
-    if (ratings) {
-      documents = documents.filter(
-        (doc: any) => doc.ratings >= ratings[0] && doc.ratings <= ratings[1]
-      );
-    }
+    //if (ratings) {
+  //   documents = documents.filter(
+       // (doc: any) => doc.ratings >= ratings[0] && doc.ratings <= ratings[1]
+      //);
+    //}
     return documents;
   } catch (error) {
     // Handle any errors that occur during the retrieval
