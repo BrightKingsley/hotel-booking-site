@@ -8,9 +8,7 @@ import { Logo } from "@/assets";
 import { AuthContext } from "@/context";
 import { Link } from "react-router-dom";
 import { useButtonStyle } from "@/hooks";
-import { BiCart } from "react-icons/bi";
 import { IoCart } from "react-icons/io5";
-import { importJSONToFirestore } from "@/api";
 // import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 const Header = () => {

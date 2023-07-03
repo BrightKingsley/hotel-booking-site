@@ -1,1 +1,1 @@
-export { db, auth, storage, importJSONToFirestore } from "./firebase";
+export { db, auth, storage } from "./firebase";

@@ -15,7 +15,7 @@ const Home = () => {
 
   useEffect(() => {
     navigate("/app/hotels");
-  });
+  }, []);
 
   return (
     <>

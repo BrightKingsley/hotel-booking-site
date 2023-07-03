@@ -18,10 +18,6 @@ import { navigateLogin } from "@/utils";
 import { Hotel as HotelType } from "@/models";
 
 export default function Hotels() {
-  useEffect(() => {
-    document.title = "Hotel Haven || All";
-  }, []);
-
   //context
   const { triggerModal } = useContext(ModalContext);
   const { user } = useContext(AuthContext);
@@ -40,10 +36,10 @@ export default function Hotels() {
 
   useEffect(() => {
     !hovered && hotels && setHovered(hotels[0]);
-    console.log("Setting Hovered");
   }, [hotels]);
 
   useEffect(() => {
+    document.title = "Hotel Haven || All";
     setLoading(true);
     const timeout = setTimeout(() => {
       setLoading(false);

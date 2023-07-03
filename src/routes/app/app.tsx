@@ -7,7 +7,7 @@ export default function App() {
 
   useEffect(() => {
     navigate("/app/hotels");
-  });
+  }, []);
   return (
     <>
       <Header />
