@@ -2,7 +2,7 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import Dropdown from "../Dropdown";
 
 import { FaUser, FaUserEdit } from "react-icons/fa";
-import { readURI, updateUser } from "@/utils";
+import { readURI, updatePhotoURL } from "@/utils";
 import { AuthContext, ModalContext, NotificationContext } from "@/context";
 import { useButtonStyle, useImageURI } from "@/hooks";
 import { BiExit } from "react-icons/bi";
@@ -40,8 +40,8 @@ export default function UserProfile() {
   };
 
   const handleFileSubmit = async () => {
-    const newDoc = await updateUser({ image: img });
-    if (newDoc) {
+    const newDoc = await updatePhotoURL({uid:user.uid, image: img });
+    if (newDoc==="success") {
       triggerNotification("image updated successfully");
     } else {
       triggerNotification("image upload failed");
