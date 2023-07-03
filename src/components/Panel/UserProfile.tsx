@@ -26,9 +26,6 @@ export default function UserProfile() {
   const buttonStyle = useButtonStyle({ color: "primary" });
   // const imageURI = useImageURI(e);
 
-  useEffect(() => {
-  }, []);
-
   const readURI = (e: ChangeEvent<HTMLInputElement>) => {
     let result;
     if (e.target.files && e.target.files[0]) {
@@ -41,10 +38,6 @@ export default function UserProfile() {
       reader.readAsDataURL(e.target.files[0]);
     }
   };
-
-  useEffect(() => {
-    console.log("IMAGEUri:", previewImage);
-  }, [previewImage]);
 
   const handleFileSubmit = async () => {
     const newDoc = await updateUser({ image: img });
