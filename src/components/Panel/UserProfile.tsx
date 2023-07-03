@@ -40,7 +40,8 @@ export default function UserProfile() {
   };
 
   const handleFileSubmit = async () => {
-    const newDoc = await updatePhotoURL({uid:user.uid, image: img });
+    if(!user) return;
+    const newDoc = await updatePhotoURL({uid:user?.uid || "", image: img });
     if (newDoc==="success") {
       triggerNotification("image updated successfully");
     } else {
