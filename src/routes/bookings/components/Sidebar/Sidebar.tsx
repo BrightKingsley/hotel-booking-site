@@ -16,48 +16,6 @@ type Section = {
   hidden: boolean;
 };
 
-type IState = Section[];
-
-type IAction = {
-  type: "GOTO_SECTION" | "HIDE_SECTION" | "SHOW_SECTION";
-  value: number;
-};
-
-// const reducer = (state: IState = initialSections, { type, value }: IAction) => {
-//   let hotelsCopy = [...initialSections];
-//   let stateCopy = [...state];
-//   switch (type) {
-//     case "GOTO_SECTION":
-//       if (value >= 0) {
-//         hotelsCopy[value] = {
-//           ...hotelsCopy[value],
-//           inView: true,
-//         };
-//         return hotelsCopy;
-//       }
-//     case "HIDE_SECTION":
-//       if (value >= 0) {
-//         stateCopy[value] = {
-//           ...stateCopy[value],
-//           hidden: true,
-//         };
-//         return stateCopy;
-//       }
-
-//     case "SHOW_SECTION":
-//       if (value >= 0) {
-//         stateCopy[value] = {
-//           ...stateCopy[value],
-//           hidden: false,
-//         };
-//         return stateCopy;
-//       }
-
-//     default:
-//       console.log("DEFAULT");
-//       return state;
-//   }
-// };
 
 export default function Sidebar({
   bookings,
@@ -72,21 +30,14 @@ export default function Sidebar({
   console.log("bookings", bookings);
 
   useEffect(() => {
-    bookings?.forEach(async (booking) => {
-      const hotel = await getHotel(booking ? booking : "");
-      console.log("hotel", hotel);
-      setHotels([...hotels, hotel]);
+    const promises:any = [];
+    bookings?.forEach((booking) => {
+      const hotel = getHotel(booking ? booking : "");
+      promises.push(hotel)
     });
+      setHotels(Promise.all(promises));
   }, [bookings]);
-  // const [hotels, dispatch] = useReducer<Reducer<IState, IAction>, IState>(
-  //   reducer,
-  //   initialSections,
-  //   () => initialSections
-  // );
-
-  useEffect(() => {
-    console.log("HOTELS", hotels);
-  }, [hotels]);
+ 
 
   return (
     true && (
