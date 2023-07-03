@@ -10,6 +10,7 @@ import {
   updateDoc,
 } from "@firebase/firestore";
 import { User } from "@/models";
+import { v4 as uuid}  from "uuid";
 
 export const getUser = async (userId: string) => {
   try {
@@ -65,10 +66,10 @@ export const updatePhotoURL = ({
   image: Blob | Uint8Array | ArrayBuffer | File;
 }) => {
   let newDoc;
-  const storageRef = ref(storage, "//uuid() or some random ID");
+  const storageRef = ref(storage, uuid());
 
   //   const uploadTask = await uploadBytesResumable(storageRef, image);
-
+try{
   uploadBytesResumable(storageRef, image).then(() => {
     getDownloadURL(storageRef).then(async (downloadURL) => {
       newDoc = await updateDoc(doc(db, "users", uid), {
@@ -76,7 +77,11 @@ export const updatePhotoURL = ({
       });
     });
   });
-  return newDoc;
+  return "success";
+}catch(err){
+  console.log(err);
+  return "failed";
+}
 };
 
 export const addToBookmarks = async (id: string): Promise<User | string> => {
