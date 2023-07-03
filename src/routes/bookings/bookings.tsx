@@ -95,7 +95,7 @@ export default function Bookings() {
       setLoading(true);
       const bookingDocuments: any = await getBookings();
       if (!bookingDocuments) return;
-      setBookings(bookingDocuments);
+      setBookings(bookingDocuments.filter(doc)=> doc?.uid === user?.uid);
       setLoading(false);
     })();
   }, []);
