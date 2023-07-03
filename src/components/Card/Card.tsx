@@ -1,5 +1,3 @@
-import { FavoriteRounded } from "@material-ui/icons";
-
 type CardProps = {
   img: string;
   top: string;
