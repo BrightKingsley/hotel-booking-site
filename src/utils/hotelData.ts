@@ -1,8 +1,5 @@
 import { db } from "@/api";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-// import hotels from "@/data/hotels-min.json";
-import hotels from "@/data/hotels.json";
-
 export const getHotels = async ({
   sort,
   type,
