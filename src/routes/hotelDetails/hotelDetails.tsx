@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import Checkout from "../bookings/components/Checkout/Checkout";
 import { Bookmark, Button, Map, Price, Ratings, Spinner } from "@/components";
 import { DetailsGallery, BookingForm, RatingsView } from "./components";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -10,7 +9,6 @@ import {
   FaHotTub,
   FaParking,
   FaPaw,
-  FaStar,
   FaSwimmingPool,
   FaWifi,
 } from "react-icons/fa";
@@ -103,7 +101,7 @@ export default function HotelDetails() {
       >
         {currentHotel ? (
           <>
-            <div className="fixed bottom-32 right-11 ">
+            {/* <div className="fixed bottom-32 right-11 ">
               <button
                 onClick={() => handleClickContact()}
                 title="contact hotel"
@@ -113,11 +111,8 @@ export default function HotelDetails() {
                   <BiMessageAlt />
                 </span>
               </button>
-            </div>
-            <Checkout
-              showCheckout={showCheckout}
-              handleShowCheckout={handleShowCheckout}
-            />
+            </div> */}
+
             {showBookingForm && (
               <BookingForm
                 hotel={currentHotel}

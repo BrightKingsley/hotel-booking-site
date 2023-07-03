@@ -1,3 +1,3 @@
-type CloseType = {
+export type CloseType = {
   close: Function;
 };

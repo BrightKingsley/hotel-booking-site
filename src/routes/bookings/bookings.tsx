@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import { AnimateInOut, Button, Carousel, Overlay, Spinner } from "@/components";
+import { useContext, useEffect, useState } from "react";
+import { AnimateInOut, Button, Overlay, Spinner } from "@/components";
 import { Calendar, Sidebar } from "./components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getBookings } from "@/utils";
-import { DocumentData } from "@firebase/firestore";
 import { Zzz } from "@/assets";
 import { Booking } from "@/models";
 import { BiMenu } from "react-icons/bi";
 import Media from "react-media";
 import Skeleton from "react-loading-skeleton";
-import Checkout from "./components/Checkout/Checkout";
+import { AuthContext, ModalContext, NotificationContext } from "@/context";
+import { usePaystackPayment } from "react-paystack";
 
 const booking = {
   uid: "uid",
@@ -24,6 +24,9 @@ const booking = {
 };
 
 export default function Bookings() {
+  const { user } = useContext(AuthContext);
+  const { triggerNotification } = useContext(NotificationContext);
+
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
@@ -36,6 +39,35 @@ export default function Bookings() {
 
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
+  const onSuccess = (reference: any) => {
+    // Implementation for whatever you want to do with reference and after success call.
+    if (reference.status === "success") {
+      triggerNotification("payment successful");
+    } else {
+      triggerNotification("payment failed");
+    }
+  };
+
+  const onClose = () => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    triggerNotification("checkout closed");
+  };
+
+  const [config, setConfig] = useState({
+    reference: new Date().getTime().toString(),
+    email: "",
+    amount: (selectedBooking?.total && selectedBooking?.total * 100) || 0, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    publicKey: "pk_test_bd2ebc6e0df8b4fd0bab4bce8c082598afa44ed9",
+  });
+
+  const initializePayment = usePaystackPayment(config);
+
+  const navigateLogin = () => {
+    navigate("/auth/login");
+  };
+
   const handleInitiatePayment = async () => {
     initiatePayment || loadingPayment
       ? setInitiatePayment(false)
@@ -46,19 +78,28 @@ export default function Bookings() {
   };
 
   useEffect(() => {
-    console.log("BOOKINGSX", bookings);
-  });
+    setConfig((prev) => ({
+      ...prev,
+      reference: new Date().getTime().toString(),
+      email: user?.email || "",
+      amount: (selectedBooking?.total && selectedBooking?.total * 100) || 0,
+    }));
+  }, [selectedBooking?.total]);
 
   useEffect(() => {
     console.log("ID", id);
     (async () => {
       setLoading(true);
-      const bookingDocuments = await getBookings();
+      const bookingDocuments: any = await getBookings();
       if (!bookingDocuments) return;
       setBookings(bookingDocuments);
       setLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    console.log(bookings);
+  }, [bookings]);
 
   useEffect(() => {
     if (!id || !bookings || bookings.length < 1) return;
@@ -81,10 +122,6 @@ export default function Bookings() {
       {(matches) => {
         return (
           <>
-            <Checkout
-              showCheckout={initiatePayment}
-              handleShowCheckout={handleInitiatePayment}
-            />
             <div className="flex w-full h-full z-30">
               {matches.small ? (
                 bookings &&
@@ -252,7 +289,10 @@ export default function Bookings() {
                           full={true}
                           loading={loadingPayment}
                           disabled={loadingPayment}
-                          onClick={() => handleInitiatePayment()}
+                          onClick={() => {
+                            // @ts-ignore
+                            user && initializePayment(onSuccess, onClose);
+                          }}
                         >
                           Confirm Payment
                         </Button>

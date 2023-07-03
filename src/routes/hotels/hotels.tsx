@@ -75,17 +75,18 @@ export default function Hotels() {
 
   const handleFilter = (filters: {
     price: [number, number];
-    reviews: [number, number];
+    ratings: [number, number];
     type: string;
   }) => {
-    loadHotels({ filters });
+    console.log(filters);
+    loadHotels(filters);
   };
 
   //h-[calc(100vh-3.8rem)]
 
   return (
     <div className="flex h-full w-full">
-      <button
+      {/* <button
         onClick={() => handleMessage()}
         title="contact hotel"
         className="fixed w-16 h-16 z-20 bg-body shadow-lg shadow-primary/30 bottom-32 right-11 text-4xl text-primary flex items-center justify-center rounded-3xl active:scale-90 active:bg-primary/30 transition-all duration-200"
@@ -93,7 +94,7 @@ export default function Hotels() {
         <span>
           <BiMessageAlt />
         </span>
-      </button>
+      </button> */}
       <div className="">
         <FilterMenu
           handleShowNav={setShowNav}
@@ -110,6 +111,7 @@ export default function Hotels() {
             <BiMenu />
           </span>
           <div className="w-32 z-20 ml-auto">
+            {/* @ts-ignore */}
             <Input
               placeholder="sort"
               selected={sortBy}

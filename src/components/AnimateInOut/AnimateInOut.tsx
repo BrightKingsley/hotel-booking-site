@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
+import { AnimateInOutType } from "./types";
 
 export default function AnimateInOut({
   children,
@@ -19,7 +20,7 @@ export default function AnimateInOut({
           animate={animate}
           exit={out}
           drag={drag}
-          onDragEnd={() => handleDragEnd()}
+          onDragEnd={() => handleDragEnd && handleDragEnd()}
           className={className}
         >
           {children}

@@ -17,10 +17,13 @@ const MyCalendar = ({
     console.log("ACTIVE___>", activeDays);
 
     activeDays.forEach((day) => {
+      // @ts-ignore
       day.style.color = "#fff";
     });
 
+    // @ts-ignore
     activeDays[0].style.backgroundColor = "rgb(132 204 22 / 0.3)";
+    // @ts-ignore
     activeDays[1].style.backgroundColor = "rgb(185 28 28 / 0.4)";
   }, []);
 

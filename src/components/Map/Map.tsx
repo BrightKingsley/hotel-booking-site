@@ -1,25 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import LocationMarker from "./LocationMarker";
+import { MapType } from "./types";
 
 export default function Map({ page, hotel, zoom }: MapType) {
   // useEffect(() => {
   //   console.log("HOTEL+++>", hotel);
   // }, [hotel]);
-  const imgs = hotel?.images;
-  const location = hotel?.address.full;
-  const price = hotel?.price;
   const coords: [number, number] =
-    hotel && hotel.location
-      ? [
-          hotel && hotel.location.lat && +hotel.location.lat,
-          hotel && hotel.location.lat && +hotel.location.lng,
-        ]
-      : [51.505, -0.09];
+    hotel && hotel?.location?.lat && +hotel?.location?.lng
+      ? [parseInt(hotel.location.lat), parseInt(hotel.location.lng)]
+      : [0, 0];
 
-  return hotel ? (
+  return coords ? (
     <MapContainer
-      center={hotel && [+hotel?.location?.lat, +hotel?.location?.lng]}
+      center={coords}
       zoom={zoom ? zoom : 13}
       scrollWheelZoom={false}
       className="bg-grey w-full h-full"

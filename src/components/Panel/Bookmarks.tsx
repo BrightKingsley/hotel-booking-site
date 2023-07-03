@@ -1,11 +1,11 @@
 import { AnimatePresence, animate, motion } from "framer-motion";
 import { Zzz } from "@/assets";
+import Bookmark from "../Bookmark";
+import { useState } from "react";
 
-let bookmarks: string[] = [];
-for (let i = 0; i < 10; i++) {
-  bookmarks.push("bookmark " + (i + 1));
-}
 export default function Bookmarks({ content }: { content: "bookmarks" }) {
+  const [bookmarks, setBookmarks] = useState<string[]>([]);
+
   return (
     <AnimatePresence>
       {content === "bookmarks" && (
@@ -21,9 +21,16 @@ export default function Bookmarks({ content }: { content: "bookmarks" }) {
                 initial={{ x: 100 }}
                 animate={{ x: 0 }}
                 transition={{ delay: i / 10, duration: (i + 8) / 10 }}
-                className="rounded-lg p-2 border-primary border-2 my-1 cursor-pointer hover:bg-primary hover:text-white active:hover:transition-all active:hover:duration-200 active:bg-white active:scale-95 active:text-gray-400"
+                className="flex items-center rounded-lg p-2 border-primary border-2 my-1 cursor-pointer hover:bg-primary hover:text-white active:hover:transition-all active:hover:duration-200 active:bg-white active:scale-95 active:text-gray-400"
               >
-                {bookmark}
+                <div className="rounded-full bg-primary w-10 h-10 overflow-clip">
+                  <img src="" />
+                </div>
+                <p className="ml-2">bookmark</p>
+
+                <div className="ml-auto">
+                  <Bookmark hotelId="" />
+                </div>
               </motion.div>
             ))
           ) : (

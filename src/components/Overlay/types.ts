@@ -1,4 +1,4 @@
-type Overlay = {
+export type Overlay = {
   children?: React.ReactNode;
   disableOnClick?: boolean;
   handleShowOverlay?: Function;

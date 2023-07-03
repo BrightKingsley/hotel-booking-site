@@ -41,16 +41,16 @@ export const HotelContextProvider = ({
 
   const loadHotels = async ({
     price,
-    reviews,
+    ratings,
     sort,
     type,
   }: {
     price?: [number, number];
-    reviews?: [number, number];
+    ratings?: [number, number];
     sort?: string;
     type?: string;
   }) => {
-    const hotels = await getHotels({ price, reviews, sort, type });
+    const hotels = await getHotels({ price, ratings, sort, type });
     setHotels(hotels);
     // setHotels(hotels);
   };

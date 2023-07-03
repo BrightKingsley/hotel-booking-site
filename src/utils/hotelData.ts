@@ -4,14 +4,14 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import hotels from "@/data/hotels.json";
 
 export const getHotels = async ({
-  // sort,
+  sort,
   type,
   price,
-  reviews,
+  ratings,
 }: {
   sort?: string;
   type?: string;
-  reviews?: [number, number];
+  ratings?: [number, number];
   price?: [number, number];
 }) => {
   try {
@@ -19,9 +19,10 @@ export const getHotels = async ({
     const hotelCollectionRef = collection(db, "hotels");
     const querySnapshot = await getDocs(hotelCollectionRef);
 
+    console.log(type, price, ratings);
+
     // Extract the data from each document
     documents = querySnapshot.docs.map((doc) => doc.data());
-    console.log("documents", documents);
 
     if (type) {
       documents = documents.filter((doc: any) => doc.type === type);
@@ -33,11 +34,12 @@ export const getHotels = async ({
       );
     }
 
-    if (reviews) {
+    if (ratings) {
       documents = documents.filter(
-        (doc: any) => doc.reviews >= reviews[0] && doc.reviews <= reviews[1]
+        (doc: any) => doc.ratings >= ratings[0] && doc.ratings <= ratings[1]
       );
     }
+    console.log("documents", documents);
 
     return documents;
   } catch (error) {

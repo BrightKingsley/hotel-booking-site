@@ -1,4 +1,4 @@
-type AnimateInOutType = {
+export type AnimateInOutType = {
   children: React.ReactNode;
   className?: string;
   // animate?: { opacity?: number; x?: number | string; y?: number | string };

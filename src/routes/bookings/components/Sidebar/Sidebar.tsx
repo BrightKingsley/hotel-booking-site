@@ -77,12 +77,16 @@ export default function Sidebar({
       console.log("hotel", hotel);
       setHotels([...hotels, hotel]);
     });
-  }, []);
+  }, [bookings]);
   // const [hotels, dispatch] = useReducer<Reducer<IState, IAction>, IState>(
   //   reducer,
   //   initialSections,
   //   () => initialSections
   // );
+
+  useEffect(() => {
+    console.log("HOTELS", hotels);
+  }, [hotels]);
 
   return (
     true && (

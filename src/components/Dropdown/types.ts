@@ -1,4 +1,4 @@
-type Dropdown = {
+export type DropdownType = {
   show: boolean;
   text: string;
   actionCancel: Function;

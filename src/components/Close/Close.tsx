@@ -1,5 +1,6 @@
 import {} from "react";
 import { IoClose } from "react-icons/io5";
+import { CloseType } from "./types";
 
 const Close = ({ close }: CloseType) => {
   return (

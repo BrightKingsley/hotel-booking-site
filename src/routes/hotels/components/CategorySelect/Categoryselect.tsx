@@ -14,8 +14,8 @@ export default function CategorySelect({
       <div className="rounded-md overflow-clip h-[4.1rem]">
         <Button
           full={true}
-          color={type === "house" ? "primary" : "gray"}
-          onClick={() => setType("house")}
+          color={type === "single" ? "primary" : "gray"}
+          onClick={() => setType("single")}
         >
           <div className="flex flex-col items-center font-[300]">
             <FaDiceOne />
@@ -26,8 +26,8 @@ export default function CategorySelect({
       <div className="rounded-md overflow-clip h-[4.1rem]">
         <Button
           full={true}
-          color={type === "apartment" ? "primary" : "gray"}
-          onClick={() => setType("apartment")}
+          color={type === "double" ? "primary" : "gray"}
+          onClick={() => setType("double")}
         >
           <div className="flex flex-col items-center font-[300]">
             <FaDiceTwo />
@@ -38,8 +38,8 @@ export default function CategorySelect({
       <div className="rounded-md overflow-clip h-[4.1rem]">
         <Button
           full={true}
-          color={type === "commercial" ? "primary" : "gray"}
-          onClick={() => setType("commercial")}
+          color={type === "triple" ? "primary" : "gray"}
+          onClick={() => setType("triple")}
         >
           <div className="flex flex-col items-center font-[300]">
             <FaDiceThree />

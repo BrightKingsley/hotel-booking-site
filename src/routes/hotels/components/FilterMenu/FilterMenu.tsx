@@ -8,8 +8,8 @@ import { BiGridHorizontal, BiMenu } from "react-icons/bi";
 
 const priceMax = 100000;
 const priceMin = 0;
-const reviewsMin = 5;
-const reviewsMax = 1;
+const ratingsMin = 5;
+const ratingsMax = 1;
 
 export default function FilterMenu({
   handleShowNav,
@@ -25,8 +25,8 @@ export default function FilterMenu({
     priceMax,
   ]);
   const [reviewsRange, setReviewsRange] = useState<[number, number]>([
-    reviewsMin,
-    reviewsMax,
+    ratingsMin,
+    ratingsMax,
   ]);
   const [windowWidth, setWindowWidth] = useState(0);
   const [type, setType] = useState("");
@@ -106,6 +106,7 @@ export default function FilterMenu({
         </div>
         <div className={"space-y-2 py-2"}>
           <p className="text-[0.8rem] font-[500]">Price Range</p>
+          {/* @ts-ignore */}
           <Input
             type="range"
             getRangeValue={getPriceRange}
@@ -186,12 +187,13 @@ export default function FilterMenu({
         </div>
         <div className={"space-y-2 py-2"}>
           <p className="text-[0.8rem] font-[500]">Reviews Range</p>
+          {/* @ts-ignore */}
           <Input
             type="range"
             getRangeValue={getReviewsRange}
             rangeValue={reviewsRange}
-            min={reviewsMax}
-            max={reviewsMin}
+            min={ratingsMax}
+            max={ratingsMin}
             step={1}
           />
           <div className={"flex justify-between items-center gap-4"}>
@@ -206,9 +208,9 @@ export default function FilterMenu({
               onChange={(e) =>
                 setReviewsRange((prevRange) => {
                   const min = e.target.valueAsNumber;
-                  if (min && min >= reviewsMax && typeof min === "number")
+                  if (min && min >= ratingsMax && typeof min === "number")
                     return [min, prevRange[1]];
-                  else return [reviewsMax, prevRange[1]];
+                  else return [ratingsMax, prevRange[1]];
                 })
               }
             />
@@ -223,9 +225,9 @@ export default function FilterMenu({
               onChange={(e) =>
                 setReviewsRange((prevRange) => {
                   const max = e.target.valueAsNumber;
-                  if (max && max <= reviewsMin && typeof max === "number")
+                  if (max && max <= ratingsMin && typeof max === "number")
                     return [prevRange[0], max];
-                  else return [prevRange[0], reviewsMin];
+                  else return [prevRange[0], ratingsMin];
                 })
               }
             />
@@ -261,7 +263,7 @@ export default function FilterMenu({
               // setParams("");
               setType("");
               setPriceRange([priceMin, priceMax]);
-              setReviewsRange([reviewsMax, reviewsMin]);
+              setReviewsRange([ratingsMax, ratingsMin]);
             }}
           >
             RESET
@@ -269,7 +271,7 @@ export default function FilterMenu({
           <Button
             full={true}
             onClick={() =>
-              handleFilters({ price: priceRange, reviews: reviewsRange, type })
+              handleFilters({ price: priceRange, ratings: reviewsRange, type })
             }
           >
             FILTER

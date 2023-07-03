@@ -63,7 +63,14 @@ interface InputType
     SelectType,
     ImageInputType,
     NormalInputType {
-  type?: "text" | "range" | "textarea" | "image" | "select" | "checkbox";
+  type?:
+    | "text"
+    | "range"
+    | "textarea"
+    | "image"
+    | "select"
+    | "checkbox"
+    | "number";
   children?: React.ReactNode;
   className?: string;
   value: string;

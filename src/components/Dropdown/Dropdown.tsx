@@ -1,6 +1,7 @@
 import {} from "react";
 import Button from "../Button";
 import { AnimatePresence, motion } from "framer-motion";
+import { DropdownType } from "./types";
 
 export default function Dropdown({
   show,
@@ -8,7 +9,7 @@ export default function Dropdown({
   actionCancel,
   actionConfirm,
   altConfirm,
-}: Dropdown) {
+}: DropdownType) {
   return (
     <AnimatePresence>
       {show && (
