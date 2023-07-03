@@ -24,6 +24,18 @@
   inset: 0;
 }
 
+.leaflet-div-icon {
+  @apply bg-transparent border-none top-[10px] left-[0.3rem]  items-center justify-center;
+  /* background-color: transparent; */
+  /* border: none;
+  top: 10px;
+  left: 0.3rem; */
+}
+.leaflet-div-icon svg {
+  position: absolute;
+  left: -20px;
+}
+
 .leaflet-popup-content-wrapper {
   @apply border-l-8 border-primary rounded-md shadow-md p-0;
 }

@@ -17,13 +17,9 @@ export default function Map({ page, hotel, zoom }: MapType) {
         ]
       : [51.505, -0.09];
 
-  return (
+  return hotel ? (
     <MapContainer
-      center={
-        (hotel && [+hotel?.location?.lat, +hotel?.location?.lng]) ?? [
-          51.505, -0.09,
-        ]
-      }
+      center={hotel && [+hotel?.location?.lat, +hotel?.location?.lng]}
       zoom={zoom ? zoom : 13}
       scrollWheelZoom={false}
       className="bg-grey w-full h-full"
@@ -34,5 +30,7 @@ export default function Map({ page, hotel, zoom }: MapType) {
       />
       <LocationMarker coords={coords && coords} hotel={hotel && hotel} />
     </MapContainer>
+  ) : (
+    <></>
   );
 }

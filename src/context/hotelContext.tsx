@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { createContext } from "react";
 import AuthContext from "./authContext";
 import { getHotel, getHotels } from "@/utils";
+import { Hotel } from "@/models";
 
 type HotelContextType = {
   hotels: Hotel[] | null;

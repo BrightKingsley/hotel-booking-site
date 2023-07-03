@@ -4,6 +4,10 @@ import { IoCloseCircle } from "react-icons/io5";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components";
+import Media from "react-media";
+import { Booking, Hotel } from "@/models";
+import { getHotels } from "@/utils";
+import { getHotel } from "@/utils";
 
 type Section = {
   path: string;
@@ -56,13 +60,24 @@ type IAction = {
 // };
 
 export default function Sidebar({
-  hotels,
+  bookings,
+  handleShowSidebar,
 }: {
-  hotels: (string | undefined)[];
+  bookings: string[] | null;
+  handleShowSidebar: Function;
 }) {
   const [openTab, setOpenaTab] = useState(true);
-  const [hideSection, setHideSection] = useState(false);
+  const [hotels, setHotels] = useState<Hotel[] | []>([]);
 
+  console.log("bookings", bookings);
+
+  useEffect(() => {
+    bookings?.forEach(async (booking) => {
+      const hotel = await getHotel(booking ? booking : "");
+      console.log("hotel", hotel);
+      setHotels([...hotels, hotel]);
+    });
+  }, []);
   // const [hotels, dispatch] = useReducer<Reducer<IState, IAction>, IState>(
   //   reducer,
   //   initialSections,
@@ -71,48 +86,39 @@ export default function Sidebar({
 
   return (
     true && (
-      <>
-        {/* <motion.div
-          drag="x"
-          // _dragY={}
-          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-          onDragEnd={() => setOpenaTab(true)}
-          whileDrag={{ scaleY: 2 }}
-          onClick={() => setOpenaTab(true)}
-          className="fixed top-1/3 left-[-49rem] cursor-pointer bg-primary rounded-r-md w-[50rem] h-72 md:h-52 z-50"
-        /> */}
-        <AnimatePresence>
-          {openTab && (
-            <div
-              // animate={{ x: 0, opacity: 1 }}
-              // exit={{ x: "-100%", opacity: 0 }}
-              className="w-full h-full bg-body shadow-lg z-50  "
-            >
-              <div className="relative  w-full h-full px-2 py-10 ">
-                <ul className="">
-                  {hotels.map((hotel, i) => (
-                    <li
-                      key={hotel}
-                      className={`w-full flex relative items-center  h-full border-b-2  after:absolute after:inset-0 after:mx-auto after:w-0 after:h-[2px] after:top-[100%] after:bg-primary hover:after:w-full after:transition-all after:duration-300 after:ease-out transition-all duration-500 hotelList `}
-                    >
-                      <NavLink
-                        to={`/app/hotels/bookings/${hotel}`}
-                        className="w-full h-full pt-4 "
-                        onClick={() => {}}
+      <Media queries={{ small: { maxWidth: 576 } }}>
+        {(matches) => (
+          <AnimatePresence>
+            {openTab && (
+              <div className="w-full h-fit sm:h-full bg-body shadow-lg z-50 flex-1 overflow-auto ">
+                <div className="relative  w-full h-full px-2 py-10 ">
+                  <ul className="">
+                    {hotels?.map((hotel, i) => (
+                      <li
+                        key={hotel?.id}
+                        className={`w-full flex relative items-center  h-full border-b-2  after:absolute after:inset-0 after:mx-auto after:w-0 after:h-[2px] after:top-[100%] after:bg-primary hover:after:w-full after:transition-all after:duration-300 after:ease-out transition-all duration-500 hotelList `}
                       >
-                        {hotel}
-                      </NavLink>
-                    </li>
-                  ))}
-                </ul>
-                {/* <div className="mt-4">
+                        <NavLink
+                          to={`/app/hotels/bookings/${hotel?.id}`}
+                          className="w-full h-full pt-4 "
+                          onClick={() => {
+                            matches.small && handleShowSidebar(false);
+                          }}
+                        >
+                          {hotel?.name}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                  {/* <div className="mt-4">
                   <Button full={true}>save</Button>
                 </div> */}
+                </div>
               </div>
-            </div>
-          )}
-        </AnimatePresence>
-      </>
+            )}
+          </AnimatePresence>
+        )}
+      </Media>
     )
   );
 }

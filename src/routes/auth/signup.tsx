@@ -222,7 +222,7 @@ export default function Signup() {
             <span className="text-white">
               <FaGoogle />
             </span>
-            <p>Sign up with google</p>
+            <p>Sign in with google</p>
           </div>
         </motion.form>
       </div>

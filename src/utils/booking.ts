@@ -1,36 +1,49 @@
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getUser } from "./handleUser";
 import { db } from "@/api";
+import { v4 as uuid } from "uuid";
 
 export const bookHotel = async ({
   uid,
   hotelId,
+  hotel,
   firstname,
   lastname,
   email,
   contact,
   checkIn,
   checkOut,
-  total,
+  price,
+  type,
 }: {
-  path;
   uid: string;
   hotelId: string;
+  hotel: string;
   firstname: string;
   lastname: string;
   email: string;
   contact: string;
   checkIn: string;
   checkOut: string;
-  total: number;
+  price: number;
+  type: string;
 }) => {
   try {
     const user = await getUser(uid);
     if (!user) throw new Error("invalid user");
-
-    //create user on firestore
     try {
-      const booking: any = await setDoc(doc(db, "bookings", uid), {
+      // Retrieve the document using its ID
+      const docRef = doc(db, "hotel", hotelId);
+      const snapshot = await getDoc(docRef);
+
+      // Check if the document exists
+      // Document found, return its data
+      if (snapshot.exists()) {
+        console.log("BOOKING_EXISTS");
+        return null;
+      }
+
+      await setDoc(doc(db, "bookings", uuid()), {
         uid,
         hotelId,
         firstname,
@@ -39,19 +52,36 @@ export const bookHotel = async ({
         contact,
         checkIn,
         checkOut,
-        total,
+        total: 0.75 * price + price,
+        type,
       });
 
-      if (!booking) throw new Error("couldn't add booking");
-
+      console.log("SUCCESS");
       return "success";
     } catch (err) {
-      console.log(err);
+      console.log("Error", err);
       return null;
     }
-    // await setDoc(doc(firestore, "userChats", userCredential.user.uid), {});
   } catch (err: any) {
     console.log(err);
+    return null;
+  }
+};
+
+export const getBookings = async () => {
+  try {
+    const hotelCollectionRef = collection(db, "bookings");
+    const querySnapshot = await getDocs(hotelCollectionRef);
+
+    // Extract the data from each document
+    const documents = querySnapshot.docs.map((doc) => doc.data());
+
+    console.log("DOCUMENTS", documents);
+
+    return documents;
+  } catch (error) {
+    // Handle any errors that occur during the retrieval
+    console.error("Error retrieving hotel documents:", error);
     return null;
   }
 };

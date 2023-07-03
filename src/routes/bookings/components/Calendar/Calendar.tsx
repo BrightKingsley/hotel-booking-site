@@ -1,11 +1,56 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Calendar from "react-calendar";
 import "./calendar.css";
 
-const MyCalendar = () => {
+const MyCalendar = ({
+  checkIn,
+  checkOut,
+}: {
+  checkIn?: string;
+  checkOut?: string;
+}) => {
+  useEffect(() => {
+    const activeDays: NodeList = document.querySelectorAll(
+      ".react-calendar__tile--hasActive"
+    )!;
+
+    console.log("ACTIVE___>", activeDays);
+
+    activeDays.forEach((day) => {
+      day.style.color = "#fff";
+    });
+
+    activeDays[0].style.backgroundColor = "rgb(132 204 22 / 0.3)";
+    activeDays[1].style.backgroundColor = "rgb(185 28 28 / 0.4)";
+  }, []);
+
   return (
-    <div>
-      <Calendar />
+    <div className="xl:flex">
+      <div className="w-80 mx-auto bg-yellow-200">
+        {/* {selectedBooking ? ( */}
+        {/* <Calendar
+                    checkIn={selectedBooking.checkIn}
+                    checkOut={selectedBooking.checkOut}
+                  /> */}
+        <Calendar defaultValue={["2023-7-12", "2023-7-8"]} />
+        {/* ) : (
+                    <Skeleton />
+                  )} */}
+      </div>
+      <div className="flex justify-between flex-wrap w-full px-2 sm:px-6 xl:px-0 py-4 xl:flex-col xl:w-fit">
+        <div className="flex items-center  gap-2 py-2">
+          <div className="w-5 h-5 rounded-full bg-lime-500/40"></div>
+          <p>Check-In</p>
+        </div>
+        <div className="flex items-center  gap-2 py-2">
+          <div className="w-5 h-5 rounded-full bg-red-700/40"></div>
+          <p>Check-Out</p>
+        </div>
+        <div className="flex items-center  gap-2 py-2">
+          <div className="w-5 h-5 rounded-full bg-primary"></div>
+          <p>Today</p>
+        </div>
+      </div>
     </div>
   );
 };

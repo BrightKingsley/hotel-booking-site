@@ -12,6 +12,6 @@ export {
   getItemFromLocalStorage,
   removeItemFromLocalStorage,
 } from "./localStorage";
-export { bookHotel } from "./booking";
+export { bookHotel, getBookings } from "./booking";
 export { navigateLogin } from "./navigate";
-export { getChats, getMessages } from "./handleChat";
+// export { getChats, getMessages, handleSendMessage } from "./handleChat";

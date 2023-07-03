@@ -19,6 +19,7 @@ import {
   getUser,
   removeItemFromLocalStorage,
 } from "@/utils";
+import { User } from "@/models";
 
 type signUpWithEmailAndPassword = {
   firstname: string;
@@ -82,9 +83,7 @@ export const AuthContextProvider = ({
 
   const { triggerNotification } = useContext(NotificationContext);
 
-  useEffect(() => {
-    console.log("user", user);
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -153,7 +152,6 @@ export const AuthContextProvider = ({
     email: string;
     password: string;
   }) => {
-    console.log("RUNNING", firstname, lastname, email, password);
     try {
       setLoading(true);
       const userCredential = await createUserWithEmailAndPassword(
@@ -161,6 +159,8 @@ export const AuthContextProvider = ({
         email,
         password
       );
+
+      console.log("CREDENTIAL", userCredential);
 
       // Signed in
       const createdUser = await createUserDocument({
@@ -210,6 +210,7 @@ export const AuthContextProvider = ({
       addItemToLocalStorage({ item: createdUser.uid, name: "uid" });
       return createdUser;
     } catch (err: any) {
+      console.log("ERROR", error);
       setError(err.message);
       setLoading(false);
       triggerNotification("sign up failed");
@@ -234,8 +235,6 @@ export const AuthContextProvider = ({
       // Signed in
       const { uid }: FirebaseUser = userCredential.user;
 
-      console.log("USER_CREDENTIAL-USER", userCredential, userCredential.user);
-
       if (!uid) {
         triggerNotification("log in failed ");
         setLoading(false);
@@ -254,7 +253,6 @@ export const AuthContextProvider = ({
 
       return userDocument;
     } catch (error: any) {
-      console.log("ERROR:", error.code, error.message);
       setLoading(false);
       triggerNotification("sign up failed");
       return null;
@@ -268,8 +266,6 @@ export const AuthContextProvider = ({
 
       //NOTE {find something to do with this}
       const token = credential?.accessToken;
-
-      console.log("GOOGEL_AUTH:", result, result.user, credential);
 
       if (!result.user) return null;
       const createdUser = await createUserDocument({
@@ -285,7 +281,7 @@ export const AuthContextProvider = ({
       }
       // The signed-in user info.
       setUser(createdUser);
-      triggerNotification("signed up successfully");
+      triggerNotification("signed in successfully");
       setLoading(false);
       addItemToLocalStorage({ item: createdUser.uid, name: "uid" });
       return createdUser;
@@ -294,13 +290,6 @@ export const AuthContextProvider = ({
 
       const credential = GoogleAuthProvider.credentialFromError(error);
       // The email of the user's account used.
-      console.log(
-        "ERROR:",
-        error.code,
-        error.message,
-        error.customData.email,
-        credential
-      );
 
       // The AuthCredential type that was used.
       return null;
@@ -310,13 +299,10 @@ export const AuthContextProvider = ({
   const logoutUser = async () => {
     try {
       const authState = await signOut(auth);
-      console.log("authState", authState);
       removeItemFromLocalStorage("uid");
       triggerNotification("signed out");
       setUser(null);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

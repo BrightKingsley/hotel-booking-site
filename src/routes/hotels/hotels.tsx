@@ -15,6 +15,7 @@ import { FilterMenu } from "./components";
 import { BiGridHorizontal, BiMenu, BiMessageAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { navigateLogin } from "@/utils";
+import { Hotel as HotelType } from "@/models";
 
 export default function Hotels() {
   //context
@@ -29,7 +30,7 @@ export default function Hotels() {
 
   //state
   const [showNav, setShowNav] = useState(true);
-  const [hovered, setHovered] = useState<Hotel | null>(null);
+  const [hovered, setHovered] = useState<HotelType | null>(null);
   const [loading, setLoading] = useState(false);
   const [sortBy, setsortBy] = useState("name");
 
@@ -44,7 +45,6 @@ export default function Hotels() {
       setLoading(false);
       loadHotels();
     }, 1000);
-
     return () => {
       clearTimeout(timeout);
     };
@@ -76,7 +76,7 @@ export default function Hotels() {
   //h-[calc(100vh-3.8rem)]
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full w-full">
       <button
         onClick={() => handleMessage()}
         title="contact hotel"
@@ -112,7 +112,7 @@ export default function Hotels() {
           </div>
         </div>
 
-        {hotels && hotels.length > 0 ? (
+        {hotels && hotels.length > 0 && !loading ? (
           <div className="px-2 w-full flex flex-col md:grid overflow-y-auto h-full md:grid-cols-2 md:w-fit py-2 gap-4 shrink-0 bg-grey">
             {showNav && (
               // <div
@@ -131,7 +131,7 @@ export default function Hotels() {
               return (
                 <div
                   onMouseOver={() => setHovered(hotel)}
-                  key={hotel?.images[0]}
+                  key={hotel?.images && hotel?.images[0]}
                   className=""
                 >
                   <Hotel hotel={hotel} />
@@ -140,7 +140,7 @@ export default function Hotels() {
             })}
           </div>
         ) : (
-          <div className="h-[calc(100vh-3.7rem)] w-full flex items-center justify-center">
+          <div className="sm:fixed top-0 right-0 h-full w-[100vw] sm:w-[80%] flex items-center justify-center">
             <Spinner size={"large"} color={"primary"} />
           </div>
         )}

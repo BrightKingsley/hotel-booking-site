@@ -4,6 +4,7 @@ import { Close, Input, Overlay } from "@/components";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, ModalContext, NotificationContext } from "@/context";
+import AnimateInOut from "../../../../components/AnimateInOut/AnimateInOut";
 
 // const config = {
 //   reference: new Date().getTime().toString(),
@@ -19,31 +20,28 @@ export default function Checkout({
   showCheckout: boolean;
   handleShowCheckout: Function;
 }) {
-  // useEffect(() => {
-  //   window.addEventListener("keydown", (e) => handleKey(e));
-  // });
-
-  // const handleKey = (e) => {
-  //   e.code === "Escape" && handleShowCheckout();
-  // };
-
-  return createPortal(
-    showCheckout && (
-      <div className={""}>
-        <Overlay show={showCheckout} disableOnClick={false} />
-        <div className={""}>
-          <span
-            className={"fixed top-1 right-1"}
-            onClick={() => handleShowCheckout()}
-            title="hide modal"
-          >
-            <Close close={() => handleShowCheckout()} />
-          </span>
-          <CheckoutHook />
-        </div>
-      </div>
-    ),
-    document.getElementById("checkout")!
+  return showCheckout ? (
+    <div className={"z-50"}>
+      <Overlay show={showCheckout} disableOnClick={false} />
+      <AnimateInOut
+        init={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        out={{ y: 100, opacity: 0 }}
+        show={showCheckout}
+        className="w-[80%] h-[80%] bg-body rounded-lg mx-auto"
+      >
+        <span
+          className={"fixed top-1 right-1"}
+          onClick={() => handleShowCheckout()}
+          title="hide modal"
+        >
+          <Close close={() => handleShowCheckout()} />
+        </span>
+        <CheckoutHook />
+      </AnimateInOut>
+    </div>
+  ) : (
+    <></>
   );
 }
 

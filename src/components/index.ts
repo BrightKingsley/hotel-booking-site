@@ -1,6 +1,7 @@
 export { default as AnimateInOut } from "./AnimateInOut";
 export { default as Avatar } from "./Avatar";
 export { default as Bookmark } from "./Bookmark";
+export { default as Breadcrumbs } from "./Breadcrumbs";
 export { default as Button } from "./Button";
 export { default as Card } from "./Card";
 export { default as Carousel } from "./Carousel";
@@ -18,4 +19,5 @@ export { default as Overlay } from "./Overlay";
 export { default as Panel } from "./Panel";
 export { default as Perks } from "./Perks";
 export { default as Price } from "./Price";
+export { default as Ratings } from "./Ratings";
 export { default as Spinner } from "./Spinner";

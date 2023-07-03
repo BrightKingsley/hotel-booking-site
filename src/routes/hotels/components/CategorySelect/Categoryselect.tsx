@@ -1,7 +1,6 @@
 import {} from "react";
 import { Button } from "@/components";
-import { FaBreadSlice, FaHome } from "react-icons/fa";
-import { IoHardwareChip, IoLaptop } from "react-icons/io5";
+import { FaDiceFour, FaDiceOne, FaDiceThree, FaDiceTwo } from "react-icons/fa";
 
 export default function CategorySelect({
   type,
@@ -19,8 +18,8 @@ export default function CategorySelect({
           onClick={() => setType("house")}
         >
           <div className="flex flex-col items-center font-[300]">
-            <FaBreadSlice />
-            <small>House</small>
+            <FaDiceOne />
+            <small>Single</small>
           </div>
         </Button>
       </div>
@@ -31,8 +30,8 @@ export default function CategorySelect({
           onClick={() => setType("apartment")}
         >
           <div className="flex flex-col items-center font-[300]">
-            <FaHome />
-            <small>Apartment</small>
+            <FaDiceTwo />
+            <small>Double</small>
           </div>
         </Button>
       </div>
@@ -43,20 +42,8 @@ export default function CategorySelect({
           onClick={() => setType("commercial")}
         >
           <div className="flex flex-col items-center font-[300]">
-            <IoHardwareChip />
-            <small>Commercial</small>
-          </div>
-        </Button>
-      </div>
-      <div className="rounded-md overflow-clip h-[4.1rem]">
-        <Button
-          full={true}
-          color={type === "land" ? "primary" : "gray"}
-          onClick={() => setType("land")}
-        >
-          <div className="flex flex-col items-center font-[300]">
-            <IoLaptop />
-            <small>Land Plot</small>
+            <FaDiceThree />
+            <small>Triple</small>
           </div>
         </Button>
       </div>

@@ -159,7 +159,7 @@ interface MousePosition {
   y: number;
 }
 
-const MouseTracker: React.FC = () => {
+const MouseTracker = () => {
   const [mousePosition, setMousePosition] = useState<MousePosition>({
     x: 0,
     y: 0,
@@ -207,25 +207,25 @@ const MouseTracker: React.FC = () => {
   return (
     <div
       // style={trackerStyle}
-      className="fixed top-0 left-0 pointer-events-none z-[9999]"
+      className="fixed -top-6 -left-6 pointer-events-none z-[9999]"
     >
       <div
-        className={`relative flex items-center bg-gradient-to justify-center grad w-16 h-16 rounded-full  ${
-          isMouseClicked ? "animate-" : "animate-"
+        className={`relative flex items-center justify-center w-4 h-4 rounded-full bg-primary/50 after:absolute after:w-[200%] after:h-[200%] after:bg-primary after:rounded-full after:opacity-20  ${
+          isMouseClicked && "animate-ping duration-75"
         }`}
         style={{
-          top: y - 10,
-          left: x - 10,
+          top: y + 14,
+          left: x + 14,
         }}
       >
         {/* <div
-          className={`absolute flex items-center justify-center bg-primary w-8 h-8 rounded-full  ${
-            isMouseClicked ? "animate-" : "animate-"
+          className={`absolute flex items-center justify-center bg-primary w-8 h-8 rounded-full opacity-25  ${
+            isMouseClicked && "animate-pulse duration-75"
           }`}
         >
           <div
             className={`absolute grad flex items-center justify-center bg-primary w-12 h-12 rounded-full  ${
-              isMouseClicked ? "animate-" : "animate-"
+              isMouseClicked && "animate-pulse duration-75"
             }`}
           ></div>
         </div> */}

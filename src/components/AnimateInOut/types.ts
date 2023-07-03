@@ -8,4 +8,6 @@ type AnimateInOutType = {
   init: { [key: string]: any };
   out: { [key: string]: any };
   show?: boolean;
+  drag?: "x" | "y" | true;
+  handleDragEnd?: Function;
 };

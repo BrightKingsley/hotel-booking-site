@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Providers
 import {
   AuthContextProvider,
+  ChatContextProvider,
   HotelContextProvider,
   ModalContextProvider,
   NotificationContextProvider,
@@ -49,8 +50,16 @@ const router = createBrowserRouter([
             element: <Hotels />,
           },
           {
+            path: "hotels/bookings",
+            element: <Bookings />,
+          },
+          {
             path: "hotels/bookings/:id",
             element: <Bookings />,
+          },
+          {
+            path: "hotels/chat",
+            element: <Chat />,
           },
           {
             path: "hotels/chat/:id",
@@ -88,7 +97,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <AuthContextProvider>
           <UserContextProvider>
             <HotelContextProvider>
+              {/* <ChatContextProvider> */}
               <RouterProvider router={router} />
+              {/* </ChatContextProvider> */}
             </HotelContextProvider>
           </UserContextProvider>
         </AuthContextProvider>

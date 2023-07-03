@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import Checkout from "./Checkout";
-import { Bookmark, Button, Header, Map, Price, Spinner } from "@/components";
-import DetailsGallery from "./DetailsGallery";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import Checkout from "../bookings/components/Checkout/Checkout";
+import { Bookmark, Button, Map, Price, Ratings, Spinner } from "@/components";
+import { DetailsGallery, BookingForm, RatingsView } from "./components";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AuthContext, HotelContext, ModalContext } from "@/context";
 import {
   FaBeer,
@@ -10,11 +10,11 @@ import {
   FaHotTub,
   FaParking,
   FaPaw,
+  FaStar,
   FaSwimmingPool,
   FaWifi,
 } from "react-icons/fa";
 import { BiMessageAlt, BiRestaurant } from "react-icons/bi";
-import BookingForm from "./BookingForm";
 import { navigateLogin } from "@/utils";
 
 let bookHotelClicked = false;
@@ -27,6 +27,7 @@ export default function HotelDetails() {
   // state
   const [showCheckout, setShowCheckout] = useState(false);
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
 
   // hooks
   const { id } = useParams();
@@ -71,11 +72,24 @@ export default function HotelDetails() {
       bookHotelClicked = true;
       return;
     }
-    setShowBookingForm(true);
+    handleShowBookingForm();
   };
 
   const handleShowCheckout = () => {
     showCheckout ? setShowCheckout(false) : setShowCheckout(true);
+  };
+
+  const handleShowReviews = () => {
+    console.log("SHOWING__REVIEWS", showReviews, showBookingForm);
+    !showBookingForm && !showReviews
+      ? setShowReviews(true)
+      : setShowReviews(false);
+  };
+
+  const handleShowBookingForm = () => {
+    !showBookingForm && !showReviews
+      ? setShowBookingForm(true)
+      : setShowBookingForm(false);
   };
 
   const handleShare = () => {};
@@ -84,20 +98,22 @@ export default function HotelDetails() {
     <>
       <div
         className={
-          "relative gridAreas py-1 grid grid-flow-col p-0 w-screen h-auto sm:h-[calc(100vh-3.7rem)] grid-rows-[17rem,auto,17rem] grid-cols-[repeat(10,minmax(1rem,1fr))] sm:grid-cols-[repeat(16,minmax(1rem,1fr))] sm:grid-rows-[repeat(16,minmax(auto,1fr))] pl-4 detailsPageMinScreen"
+          "relative gridAreas  py-1 grid grid-flow-col p-0 w-screen h-auto sm:h-[calc(100vh-3.7rem)] grid-rows-[17rem,auto,17rem] grid-cols-[repeat(10,minmax(1rem,1fr))] sm:grid-cols-[repeat(16,minmax(1rem,1fr))] sm:grid-rows-[repeat(16,minmax(auto,1fr))] pl-4 detailsPageMinScreen"
         }
       >
         {currentHotel ? (
           <>
-            <button
-              onClick={() => handleClickContact()}
-              title="contact hotel"
-              className="fixed w-16 h-16 z-20 bg-body shadow-lg shadow-primary/30 bottom-32 right-11 text-4xl text-primary flex items-center justify-center rounded-3xl active:scale-90 active:bg-primary/30 transition-all duration-200"
-            >
-              <span>
-                <BiMessageAlt />
-              </span>
-            </button>
+            <div className="fixed bottom-32 right-11 ">
+              <button
+                onClick={() => handleClickContact()}
+                title="contact hotel"
+                className="relative w-16 h-16 z-20 bg-body shadow-lg shadow-primary/30 text-4xl text-primary flex items-center justify-center rounded-3xl active:scale-90 after:absolute after:w-full after:h-full active:after:bg-primary/30 transition-all duration-200"
+              >
+                <span>
+                  <BiMessageAlt />
+                </span>
+              </button>
+            </div>
             <Checkout
               showCheckout={showCheckout}
               handleShowCheckout={handleShowCheckout}
@@ -107,6 +123,13 @@ export default function HotelDetails() {
                 hotel={currentHotel}
                 show={showBookingForm}
                 handleShowForm={setShowBookingForm}
+              />
+            )}
+            {showReviews && (
+              <RatingsView
+                hotel={currentHotel}
+                show={showReviews}
+                handleShowReviews={handleShowReviews}
               />
             )}
             <DetailsGallery hotel={currentHotel} />
@@ -132,9 +155,24 @@ export default function HotelDetails() {
               <div className={"sm:hidden w-24 h-[6px] rounded-full bg-grey"} />
               <section className={"relative flex flex-col items-start w-full"}>
                 <h2 className="font-bold text-2xl">{currentHotel.name}</h2>
-                <small className="">{currentHotel.address.full}</small>
-                <div className={"mt-2"}>
-                  <Price price={currentHotel.price} />
+                <small className="">{currentHotel.address?.full}</small>
+                <div className={"mt-2 w-full pr-2 xl:pr-20"}>
+                  <div className="flex justify-between">
+                    <Price price={currentHotel.price ?? null} />
+                    <div className="gap-1 flex items-center">
+                      <Ratings
+                        rating={
+                          currentHotel?.rating ? currentHotel?.rating / 2 : 10
+                        }
+                      />
+                      <button
+                        onClick={() => handleShowReviews()}
+                        className="bg-primary/30 px-[5px] rounded"
+                      >
+                        <small>View Reviews</small>
+                      </button>
+                    </div>
+                  </div>
                   <div className={"flex items-center space-x-4 py-1"}>
                     {/* NOTE */}
                     <Button
@@ -154,7 +192,7 @@ export default function HotelDetails() {
                     </Button>
 
                     <span className={"cursor-pointer flex items-center"}>
-                      <Bookmark hotelId={currentHotel.name} />
+                      <Bookmark hotelId={currentHotel.name ?? ""} />
                     </span>
                   </div>
                 </div>

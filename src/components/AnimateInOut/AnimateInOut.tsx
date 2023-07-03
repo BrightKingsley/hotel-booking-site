@@ -7,6 +7,8 @@ export default function AnimateInOut({
   animate,
   init,
   out,
+  drag,
+  handleDragEnd,
   className,
 }: AnimateInOutType) {
   return (
@@ -16,6 +18,8 @@ export default function AnimateInOut({
           initial={init}
           animate={animate}
           exit={out}
+          drag={drag}
+          onDragEnd={() => handleDragEnd()}
           className={className}
         >
           {children}

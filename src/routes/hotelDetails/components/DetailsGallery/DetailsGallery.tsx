@@ -38,9 +38,9 @@ export default function DetailsGallery({ hotel }: DetailsGallery) {
           )}
         </div>
       </div>
-      <div className={"sm:hidden fixed mt-16 bg-grey"}>
+      <div className={"sm:hidden fixed bg-grey"}>
         <div className={"fixed block"}>
-          <Carousel images={hotelImgs} height="h-64" />
+          <Carousel images={hotelImgs} height="h-80" />
         </div>
       </div>
     </>

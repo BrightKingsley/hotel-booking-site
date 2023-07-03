@@ -1,11 +1,13 @@
-type Booking = {
+export type Booking = {
   uid: string;
   firstname: string;
   lastname: string;
+  email: string;
   contact: string;
-  hotel: Hotel;
+  hotelId: string;
+  hotel?: string;
+  type: "single" | "double" | "triple";
   checkIn: string;
   checkOut: string;
   total: number;
-  vat: string;
 };

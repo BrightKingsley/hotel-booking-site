@@ -1,7 +1,7 @@
-type Hotel = {
+export type Hotel = {
   name?: string;
   id?: string;
-  type?: string;
+  type?: string | null;
   price?: number;
   address?: {
     full?: string;
@@ -10,7 +10,7 @@ type Hotel = {
     country?: string;
     region?: string;
   };
-  location?: { lat: number; lng: number };
+  location?: { lat: string; lng: string };
   rating?: number;
   amenities?: {
     wifi?: boolean;
@@ -26,5 +26,18 @@ type Hotel = {
   contact?: string;
   images?: string[];
   description?: string;
-  reviews?: {}[];
+  reviews?: number;
+  userReviews?: {
+    title: string | null;
+    score: number | null;
+    positive: string | null;
+    negative: string | null;
+    travellerType: string | null;
+    room: string | null;
+    nightsStay: number | null;
+    date: string | null;
+    country: string | null;
+    countryCode: string | null;
+    photos: [] | null;
+  }[];
 } | null;

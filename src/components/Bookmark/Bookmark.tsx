@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext, ModalContext } from "@/context";
 import { addToBookmarks, removeFromBookmarks } from "@/utils";
 import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
+import { User } from "@/models";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "@/api";
 
 export default function Bookmark({ hotelId }: { hotelId: string }) {
   const { token, user } = useContext(AuthContext);
@@ -19,6 +22,20 @@ export default function Bookmark({ hotelId }: { hotelId: string }) {
   const navigateLogin = () => {
     navigate("/auth/login");
   };
+
+  useEffect(() => {
+    // const unsub = onSnapshot(
+    //   doc(db, "users", user?.uid ? user.uid : ""),
+    //   (doc) => {
+    //     doc.data()?.bookmarks.includes(hotelId)
+    //       ? setBookmarked(true)
+    //       : setBookmarked(false);
+    //   }
+    // );
+    // return () => {
+    //   unsub();
+    // };
+  });
 
   useEffect(() => {
     const hasBookmark = user?.bookmarks?.includes(hotelId);
