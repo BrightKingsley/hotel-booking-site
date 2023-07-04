@@ -14,7 +14,7 @@ export default function Hotel({ hotel }: { hotel: Hotel }) {
       <div
         className={`relative overflow-clip mx-auto rounded-md w-full g-green-400 flex-1 bg-cover bg-center`}
       >
-        <div className="absolute z-10 top-3 right-3 bg-body rounded-md">
+        <div className="absolute z-[1] top-3 right-3 bg-body rounded-md">
           <Bookmark hotelId={hotel?.id ?? ""} />
         </div>
         <img
