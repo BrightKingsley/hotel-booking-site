@@ -32,7 +32,7 @@ export default function Bookings() {
 
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
-  const [showSidebar, setShowSidebar] = useState<boolean>(true);
+  const [showSidebar, setShowSidebar] = useState<boolean>(false);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingPayment, setLoadingPayment] = useState<boolean>(false);
