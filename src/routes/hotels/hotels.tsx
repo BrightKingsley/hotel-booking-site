@@ -41,13 +41,8 @@ export default function Hotels() {
   useEffect(() => {
     document.title = "Hotel Haven || All";
     setLoading(true);
-    const timeout = setTimeout(() => {
       setLoading(false);
       loadHotels({});
-    }, 1000);
-    return () => {
-      clearTimeout(timeout);
-    };
   }, []);
 
   // @ts-ignore
