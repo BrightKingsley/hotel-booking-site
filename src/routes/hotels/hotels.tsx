@@ -29,7 +29,7 @@ export default function Hotels() {
   const navigate = useNavigate();
 
   //state
-  const [showNav, setShowNav] = useState(false);
+  const [showNav, setShowNav] = useState(true);
   const [hovered, setHovered] = useState<HotelType | null>(null);
   const [loading, setLoading] = useState(false);
   const [sortBy, setsortBy] = useState("name");
