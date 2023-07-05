@@ -60,7 +60,7 @@ export default function BookingForm({
 
     setLoading(true);
     if (!hotel?.price) return;
-    const result = await bookHotel({
+    const result : "success" | "exists" | null = await bookHotel({
       uid: (user && user.uid) || "",
       checkIn,
       hotelId: hotel?.id || "",
@@ -76,12 +76,13 @@ export default function BookingForm({
 
     if (result == "exists") {
       setLoading(false);
+      handleShowForm(false); 
       return triggerNotification(<Link to={`/app/hotels/bookings/${hotel?.id}`}>
         <div className="w-full h-full">
           You have already booked this hotel. Click to view.
         </div>
       </Link>);
-    }else if (result == "success"){
+    } else if(result == "success"){
      triggerNotification(
       <Link to={`/app/hotels/bookings/${hotel?.id}`}>
         <div className="w-full h-full">
