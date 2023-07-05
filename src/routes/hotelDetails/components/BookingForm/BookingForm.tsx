@@ -74,16 +74,12 @@ export default function BookingForm({
       type: hotel.type || "single",
     });
 
-    if (result == "exists") {
+    if (result !== "success") {
       setLoading(false);
-      handleShowForm(false); 
-      return triggerNotification(<Link to={`/app/hotels/bookings/${hotel?.id}`}>
-        <div className="w-full h-full">
-          You have already booked this hotel. Click to view.
-        </div>
-      </Link>);
-    } else if(result == "success"){
-     triggerNotification(
+      return triggerNotification("Unable to book this hotel, please try again");
+    }
+
+    triggerNotification(
       <Link to={`/app/hotels/bookings/${hotel?.id}`}>
         <div className="w-full h-full">
           Hotel booked successfully click to view boking details
@@ -91,11 +87,7 @@ export default function BookingForm({
       </Link>
     );
     setLoading(false);
-    handleShowForm(false); 
-    }else{
-       setLoading(false);
-      return triggerNotification("Unable to book this hotel, please try again");
-    }
+    handleShowForm(false);
   };
 
   return (
