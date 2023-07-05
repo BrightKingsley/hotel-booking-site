@@ -35,8 +35,9 @@ export default function Sidebar({
       const hotel = getHotel(booking ? booking : "");
       promises.push(hotel)
     });
+    
       setHotels(Promise.all(promises));
-  }, [bookings]);
+  }, []);
  
 
   return (
