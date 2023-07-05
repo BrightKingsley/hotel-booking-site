@@ -40,6 +40,9 @@ export default function Hotels() {
 
   useEffect(() => {
     document.title = "Hotel Haven || All";
+    if(window.innerWidth <= 576){
+      setShowNav(false);
+    }
     setLoading(true);
       setLoading(false);
       loadHotels({});
