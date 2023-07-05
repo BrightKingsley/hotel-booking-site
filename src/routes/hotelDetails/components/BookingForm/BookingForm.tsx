@@ -74,20 +74,44 @@ export default function BookingForm({
       type: hotel.type || "single",
     });
 
-    if (result !== "success") {
+    // if (result !== "success") {
+    //   setLoading(false);
+    //   return triggerNotification("Unable to book this hotel, please try again");
+    // }
+
+    // triggerNotification(
+    //   <Link to={`/app/hotels/bookings/${hotel?.id}`}>
+    //     <div className="w-full h-full">
+    //       Hotel booked successfully click to view boking details
+    //     </div>
+    //   </Link>
+    // );
+    // setLoading(false);
+    // handleShowForm(false);
+    if (result === "success") {
+      triggerNotification(
+        <Link to={`/app/hotels/bookings/${hotel?.id}`}>
+          <div className="w-full h-full">
+            Hotel booked successfully click to view boking details
+          </div>
+        </Link>
+      );
+      setLoading(false);
+      handleShowForm(false);
+    } else if (result === "exists") {
+      triggerNotification(
+        <Link to={`/app/hotels/bookings/${hotel?.id}`}>
+          <div className="w-full h-full">
+            You have already booked this hotel. Click to view
+          </div>
+        </Link>
+      );
+      setLoading(false);
+      handleShowForm(false);
+    } else {
       setLoading(false);
       return triggerNotification("Unable to book this hotel, please try again");
     }
-
-    triggerNotification(
-      <Link to={`/app/hotels/bookings/${hotel?.id}`}>
-        <div className="w-full h-full">
-          Hotel booked successfully click to view boking details
-        </div>
-      </Link>
-    );
-    setLoading(false);
-    handleShowForm(false);
   };
 
   return (
