@@ -46,11 +46,7 @@ export const bookHotel = async ({
       if (exists) {
         return "exists";
       }
-      if (snapshot.exists()) {
-        console.log("BOOKING_EXISTS");
-        return "exists";
-      }
-
+      
       await setDoc(doc(db, "bookings", uuid()), {
         uid,
         hotelId,
