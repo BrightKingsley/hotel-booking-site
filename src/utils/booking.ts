@@ -33,14 +33,22 @@ export const bookHotel = async ({
     if (!user) throw new Error("invalid user");
     try {
       // Retrieve the document using its ID
-      const docRef = doc(db, "hotel", hotelId);
-      const snapshot = await getDoc(docRef);
+      const colRef = collection(db, "bookings");
+      const querySnapshot = await getDocs(colRef);
 
+      const bookings = querySnapshot.docs.map((doc: any) => doc.data());
       // Check if the document exists
-      // Document found, return its data
+       const exists = bookings.some(
+        (booking: any) => booking.uid === uid && booking.hotelId === hotelId
+      );
+
+      // Document found, cancel to prevent duplicate booking
+      if (exists) {
+        return "exists";
+      }
       if (snapshot.exists()) {
         console.log("BOOKING_EXISTS");
-        return null;
+        return "exists";
       }
 
       await setDoc(doc(db, "bookings", uuid()), {
