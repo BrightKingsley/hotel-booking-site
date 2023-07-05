@@ -30,13 +30,16 @@ export default function Sidebar({
   console.log("bookings", bookings);
 
   useEffect(() => {
-    const promises:any = [];
-    bookings?.forEach((booking) => {
-      const hotel = getHotel(booking ? booking : "");
-      promises.push(hotel)
-    });
-    
-      setHotels(Promise.all(promises));
+    (async () => {
+      const promises: any = [];
+      bookings?.forEach((booking) => {
+        const hotel = getHotel(booking ? booking : "");
+        promises.push(hotel);
+      });
+      const hotelBookings = await Promise.all(promises);
+      console.log("HOTEL_BOKINGS", hotelBookings);
+      setHotels(hotelBookings);
+    })();
   }, []);
  
 
