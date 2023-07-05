@@ -99,16 +99,12 @@ export default function Bookings() {
       setLoading(false);
     })();
   }, []);
-
-  useEffect(() => {
-    console.log(bookings);
-  }, [bookings]);
-
+  
   useEffect(() => {
     if (!id || !bookings || bookings.length < 1) return;
     const currentBooking = bookings.find((booking) => booking.hotelId === id);
     setSelectedBooking(currentBooking ? currentBooking : null);
-  }, [bookings?.length]);
+  }, [bookings?.length,id]);
 
   // useEffect(() => {
   //   (async () => {
@@ -222,7 +218,7 @@ export default function Bookings() {
                     show={true}
                     className="w-[80%] h-[80%] bg-body rounded-lg mx-auto"
                   >
-                    <div className="text-center p-3 space-y-4">
+                    <div className="text-left p-3 space-y-4">
                       <div className="">
                         {/* <Carousel
                   height="h-52"
@@ -233,7 +229,7 @@ export default function Bookings() {
                   }
                 /> */}
                       </div>
-                      <div className="">
+                       <div className="bg-primary/20 p-2 w-full pl-8 rounded-md h-16">
                         <h2>{selectedBooking?.hotel}</h2>
                         <p>
                           <span>fullname: </span>
@@ -241,13 +237,13 @@ export default function Bookings() {
                           {selectedBooking?.lastname}
                         </p>
                       </div>
-                      <div className="bg-primary/20 p-2 w-full">
+                       <div className="bg-primary/20 p-2 w-full pl-8 rounded-md h-16">
                         <p>
                           <span>contact: </span>
                           {selectedBooking?.contact}
                         </p>
                       </div>
-                      <div className="bg-primary/20 p-2 w-full">
+                       <div className="bg-primary/20 p-2 w-full pl-8 rounded-md h-16">
                         <p>
                           <span>check-in: </span>
                           {new Date(
@@ -260,7 +256,7 @@ export default function Bookings() {
                           })}
                         </p>
                       </div>
-                      <div className="bg-primary/20 p-2 w-full">
+                       <div className="bg-primary/20 p-2 w-full pl-8 rounded-md h-16">
                         <p>
                           <span>check-out: </span>
                           {new Date(
@@ -273,7 +269,7 @@ export default function Bookings() {
                           })}
                         </p>
                       </div>
-                      <div className="bg-primary/20 p-2 w-full">
+                       <div className="bg-primary/20 p-2 w-full pl-8 rounded-md h-16">
                         <p>
                           <span>Total (VAT included): </span>₦
                           {selectedBooking?.total}.00
