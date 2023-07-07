@@ -118,15 +118,15 @@ react-calendar__tile react-calendar__tile--now react-calendar__month-view__days_
   /* @apply !bg-red-400; */
 }
 
+/*
 .react-calendar__tile--hasActive:first-of-type {
-  /* background: var(--mid-2); */
   @apply !bg-yellow-400;
 }
 
 .react-calendar__tile--hasActive:nth-child(1) {
-  /* background: var(--mid-2); */
   @apply !bg-yellow-400;
 }
+*/
 
 .react-calendar__tile--hasActive:enabled:hover,
 .react-calendar__tile--hasActive:enabled:focus {
