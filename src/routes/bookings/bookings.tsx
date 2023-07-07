@@ -90,7 +90,9 @@ export default function Bookings() {
   }, [selectedBooking?.total]);
 
   useEffect(() => {
-    console.log("ID", id);
+    if(window.innerWidth > 576){
+      setShowSidebar(true)
+    }
     (async () => {
       setLoading(true);
       const bookingDocuments: any = await getBookings();
