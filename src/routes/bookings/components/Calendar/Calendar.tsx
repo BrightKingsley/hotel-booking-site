@@ -29,7 +29,7 @@ const MyCalendar = ({
 
   return (
     <div className="xl:flex">
-      <div className="w-80 mx-auto bg-yellow-200">
+      <div className="w-80 mx-auto">
         {/* {selectedBooking ? ( */}
         {/* <Calendar
                     checkIn={selectedBooking.checkIn}
