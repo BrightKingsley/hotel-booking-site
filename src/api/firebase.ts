@@ -11,7 +11,8 @@ import { getFirestore } from "@firebase/firestore";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCFR74wMNzmtJGXayAgu_yQvA6BL_55C18",
-  authDomain: "hotel-haven-790a6.firebaseapp.com",
+  // authDomain: "hotel-haven-790a6.firebaseapp.com",
+  authDomain: "https://hotel-haven.vercel.app",
   projectId: "hotel-haven-790a6",
   storageBucket: "hotel-haven-790a6.appspot.com",
   messagingSenderId: "502264571365",
